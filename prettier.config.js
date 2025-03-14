@@ -1,5 +1,5 @@
-const config = {
-    "quoteProps": "preserve",
-};
+// const config = {
+//   quoteProps: "preserve",
+// };
 
-export default config;
+// export default config;
