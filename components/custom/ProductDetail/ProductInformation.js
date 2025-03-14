@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { convertPrice } from "@/utils/convertPrice";
 
 export const ProductInformation = ({ product }) => {
+  const [quantity, setQuantity] = useState(1);
+
+  const incQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const decQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    } else {
+      setQuantity(1);
+    }
+  };
+
   return (
     <>
       {product && (
@@ -98,18 +112,21 @@ export const ProductInformation = ({ product }) => {
                   <button
                     style={{ border: "1px solid rgba(0, 0, 0, .09)" }}
                     className="inline-flex mt-2 p-2 rounded-sm items-center justify-center w-8"
+                    onClick={() => decQuantity()}
                   >
                     -
                   </button>
                   <input
                     type="text"
-                    value={1}
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
                     style={{ border: "1px solid rgba(0, 0, 0, .09)" }}
                     className="inline-flex mt-2 p-2 w-12 text-center"
                   />
                   <button
                     style={{ border: "1px solid rgba(0, 0, 0, .09)" }}
                     className="inline-flex mt-2 p-2 rounded-sm items-center justify-center w-8"
+                    onClick={() => incQuantity()}
                   >
                     +
                   </button>

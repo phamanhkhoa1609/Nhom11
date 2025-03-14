@@ -1,6 +1,10 @@
-import axios from "axios";
+"use server";
 
-const register = async (username, name, email, password) => {
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { cookies } from "next/headers";
+
+export const register = async (username, name, email, password) => {
   try {
     const res = await axios.post("http://localhost:8080/api/v1/auth/signup", {
       username: username,
@@ -17,7 +21,7 @@ const register = async (username, name, email, password) => {
   }
 };
 
-const login = async (username, password) => {
+export const login = async (username, password) => {
   const data = {
     grant_type: "password",
     username: username,
@@ -41,22 +45,48 @@ const login = async (username, password) => {
     );
 
     if (res && res.data) {
-      localStorage.setItem("accessToken", res.data.access_token);
-      localStorage.setItem("role", res.data.scope);
-      localStorage.setItem("refreshToken", res.data.refresh_token);
-      return res.data;
+      const cookieStore = cookies();
+      const { access_token: accessToken, refresh_token: refreshToken } =
+        res.data;
+
+      cookieStore.set("accessToken", accessToken);
+      cookieStore.set("refreshToken", refreshToken);
+    } else {
+      throw new Error("Failed to login.");
     }
   } catch (error) {
-    return error.response;
+    console.log(error);
   }
 };
 
-const logout = () => {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("role");
-  localStorage.removeItem("refreshToken");
+export const logout = async () => {
+  try {
+    const cookieStore = cookies();
+    cookieStore.delete("accessToken");
+    cookieStore.delete("refreshToken");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const getToken = () => localStorage.getItem("token");
+export const getSession = async () => {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  if (accessToken) {
+    const user = jwtDecode(accessToken);
 
-export { register, login, logout, getToken };
+    return user;
+  } else {
+    return undefined;
+  }
+};
+
+export const getAccessToken = async () => {
+  const cookieStore = cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  if (accessToken) {
+    return accessToken;
+  } else {
+    return undefined;
+  }
+};
