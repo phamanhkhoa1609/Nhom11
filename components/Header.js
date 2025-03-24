@@ -1,7 +1,6 @@
 "use client";
 
 import SearchInput from "./custom/SearchInput";
-import DialogAddress from "./custom/DialogAddress";
 import Link from "next/link";
 import { nunito } from "./ui/fonts";
 import {
@@ -12,14 +11,30 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "@/components/icons/logout";
+import { Login } from "@/components/icons/login";
 import { Profile } from "@/components/icons/profile";
-import { getSession, logout } from "@/services/authServices";
+import { getAccessToken, getSession, logout } from "@/services/authServices";
 import { useRouter } from "next/navigation";
+import { getUserById } from "@/services/userServices";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const router = useRouter();
 
-  const getUserInfo = async () => {};
+  const [userInfo, setUserInfo] = useState();
+
+  const getUserInfo = async () => {
+    const session = await getSession();
+    const accessToken = await getAccessToken();
+
+    if (session) {
+      setUserInfo(await getUserById(session.id, accessToken));
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return (
     <div className="flex justify-center px-32 py-2">
@@ -67,26 +82,39 @@ const Header = () => {
                 <DropdownMenuTrigger className="space-x-2">
                   Tài khoản
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem
-                    className="space-x-2 cursor-pointer"
-                    onClick={() => router.push("/profile")}
-                  >
-                    <Profile className="size-5" />
-                    <span>Hồ sơ</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    className="space-x-2 cursor-pointer"
-                    onClick={() => {
-                      logout();
-                      router.push("/login");
-                    }}
-                  >
-                    <LogOut className="size-5" />
-                    <span>Đăng xuất</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
+                {userInfo && (
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      className="space-x-2 cursor-pointer"
+                      onClick={() => router.push("/profile")}
+                    >
+                      <Profile className="size-5" />
+                      <span>Hồ sơ</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="space-x-2 cursor-pointer"
+                      onSelect={() => {
+                        logout();
+                      }}
+                    >
+                      <LogOut className="size-5" />
+                      <span>Đăng xuất</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                )}
+
+                {!userInfo && (
+                  <DropdownMenuContent>
+                    <DropdownMenuItem
+                      className="space-x-2"
+                      onSelect={() => logout()}
+                    >
+                      <Login className="size-5" />
+                      <span>Đăng nhập</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                )}
               </DropdownMenu>
 
               {/* Cart */}

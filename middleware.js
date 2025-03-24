@@ -10,13 +10,7 @@ import {
 export async function middleware(request) {
   const session = await getSession();
   const accessToken = await getAccessToken();
-
-  let userRole;
-  if (session) {
-    const user = await getUserById(session.id, accessToken);
-    userRole = session.authorities[0];
-  }
-
+  const userRole = session?.authorities[0];
   const { nextUrl } = request;
 
   const isAuthenticated = !!accessToken;
@@ -35,16 +29,11 @@ export async function middleware(request) {
     return Response.redirect(new URL("/login", nextUrl));
   }
 
-  if (isAuthenticated && isAuthRoute) {
+  if (isAuthRoute && isAuthenticated) {
     return Response.redirect(new URL("/", nextUrl));
   }
 
   return null;
-
-  // console.log("pathname: ", nextUrl.pathname);
-  // console.log("isAdminRoute: ", isAdminRoute);
-  // console.log("isPublicRoute: ", isPublicRoute);
-  // console.log("isProtectedRoute: ", isProtectedRoute);
 }
 
 export const config = {

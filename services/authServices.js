@@ -3,6 +3,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export const register = async (username, name, email, password) => {
   try {
@@ -21,7 +22,7 @@ export const register = async (username, name, email, password) => {
   }
 };
 
-export const login = async (username, password) => {
+export const authorize = async (username, password) => {
   const data = {
     grant_type: "password",
     username: username,
@@ -51,22 +52,32 @@ export const login = async (username, password) => {
 
       cookieStore.set("accessToken", accessToken);
       cookieStore.set("refreshToken", refreshToken);
+
+      const role = jwtDecode(accessToken).authorities[0];
+
+      return role;
     } else {
-      throw new Error("Failed to login.");
+      throw new Error("Failed to authorize user.");
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const logout = async () => {
-  try {
-    const cookieStore = cookies();
-    cookieStore.delete("accessToken");
-    cookieStore.delete("refreshToken");
-  } catch (error) {
-    console.log(error);
+export const login = async (username, password) => {
+  const role = await authorize(username, password);
+  if (role == "ADMIN") {
+    redirect("/admin");
+  } else {
+    redirect("/");
   }
+};
+
+export const logout = async () => {
+  const cookieStore = cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
+  redirect("/login");
 };
 
 export const getSession = async () => {
