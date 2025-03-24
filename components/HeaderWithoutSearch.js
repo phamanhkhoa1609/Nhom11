@@ -4,7 +4,7 @@ import { nunito } from "./ui/fonts";
 const HeaderWithoutSearch = ({ pageTitle }) => {
   return (
     <>
-      <div className="bg-white py-2 px-52 flex flex-row justify-between">
+      <div className="bg-white py-2 px-32 flex flex-row justify-between">
         <div className="text-primary">
           <div className="flex flex-row justify-center items-center">
             {/* Logo */}
@@ -18,7 +18,7 @@ const HeaderWithoutSearch = ({ pageTitle }) => {
               </div>
             </Link>
 
-            <div className="text-xl w-fit border-l-2 border-blue-600 h-8 ml-6 pl-6 flex items-center">
+            <div className="text-xl w-fit border-l-2 border-primary h-8 ml-6 pl-6 flex items-center">
               {pageTitle}
             </div>
           </div>

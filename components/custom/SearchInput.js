@@ -1,5 +1,7 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const SearchInput = ({ placeholder }) => {
   return (
@@ -32,14 +34,13 @@ const SearchInput = ({ placeholder }) => {
         <input
           type="search"
           id="default-search"
-          className="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          className="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none focus:border-blue-500 border-2"
           placeholder={placeholder}
-          required
         />
 
         <button
           type="submit"
-          className="absolute top-0 end-0 p-2.5 text-sm h-full text-primary bg-white rounded-e-lg border-y border-r border-gray-300 hover:bg-blue-200 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="absolute top-0 end-0 p-2.5 text-sm h-full text-primary bg-transparent rounded-e-lg border-0 border-gray-300 hover:bg-blue-200 focus:ring-blue-300 dark:bg-primary dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Tìm kiếm
         </button>

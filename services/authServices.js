@@ -74,7 +74,6 @@ export const getSession = async () => {
   const accessToken = cookieStore.get("accessToken")?.value;
   if (accessToken) {
     const user = jwtDecode(accessToken);
-
     return user;
   } else {
     return undefined;

@@ -1,9 +1,26 @@
+"use client";
+
 import HeaderWithoutSearch from "@/components/HeaderWithoutSearch";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LoginLayout({ children }) {
+  const pathName = usePathname();
+  const [title, setTitle] = useState("");
+  useEffect(() => {
+    switch (pathName) {
+      case "/login":
+        setTitle("Đăng nhập");
+        break;
+      case "/register":
+        setTitle("Đăng ký");
+      default:
+        break;
+    }
+  }, [pathName]);
   return (
     <>
-      <HeaderWithoutSearch pageTitle={"Đăng nhập"}></HeaderWithoutSearch>
+      <HeaderWithoutSearch pageTitle={title}></HeaderWithoutSearch>
       {children}
     </>
   );

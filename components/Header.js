@@ -22,11 +22,11 @@ const Header = () => {
   const getUserInfo = async () => {};
 
   return (
-    <div className="flex justify-center px-32">
+    <div className="flex justify-center px-32 py-2">
       <div className="pb-1 pt-2 bg-white grid grid-cols-12 items-start">
         {/* Logo */}
-        <Link href="/" className={`${nunito.className}`}>
-          <div className="flex-col items-center text-primary col-span-1">
+        <Link href="/" className={`${nunito.className} w-fit`}>
+          <div className="flex-col items-center text-primary justify-center">
             <div className="flex">
               <div className="text-5xl font-extrabold">Har</div>
               <div className="text-5xl font-bold text-yellow-500">be</div>
@@ -128,7 +128,7 @@ const Header = () => {
             </div>
 
             {/* Giao đến */}
-            <div className="flex">
+            {/* <div className="flex">
               <div className="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +152,7 @@ const Header = () => {
                 Giao đến:
               </div>
               <DialogAddress />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
