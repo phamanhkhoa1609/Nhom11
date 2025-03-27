@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 pt-4 divide-y">
-      <div className="flex justify-between w-[1320px] p-4 bg-white rounded-t-md">
+    <div className="flex flex-col items-center justify-center bg-gray-100 pt-4 divide-y px-32">
+      <div className="flex justify-between w-full p-4 bg-white rounded-t-md">
         <div className="flex flex-col gap-4 w-1/5">
           <span>Hỗ trợ khách hàng</span>
           <div className="space-y-2">
@@ -116,7 +116,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-[1320px] p-4 bg-white gap-4">
+      <div className="flex flex-col w-full mx-32 p-4 bg-white gap-4">
         <div>Công ty TNHH Harbe</div>
         <div className="space-y-2">
           <div className="text-xs text-gray-500">

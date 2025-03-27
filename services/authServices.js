@@ -45,6 +45,7 @@ export const authorize = async (username, password) => {
       config
     );
 
+    console.log(res);
     if (res && res.data) {
       const cookieStore = cookies();
       const { access_token: accessToken, refresh_token: refreshToken } =
@@ -54,23 +55,31 @@ export const authorize = async (username, password) => {
       cookieStore.set("refreshToken", refreshToken);
 
       const role = jwtDecode(accessToken).authorities[0];
-
       return role;
     } else {
       throw new Error("Failed to authorize user.");
     }
   } catch (error) {
-    console.log(error);
+    throw new Error("Failed to authorize user.");
   }
 };
 
 export const login = async (username, password) => {
-  const role = await authorize(username, password);
-  if (role == "ADMIN") {
-    redirect("/admin");
-  } else {
-    redirect("/");
+  let flag = true;
+  let role;
+  try {
+    role = await authorize(username, password);
+  } catch (error) {
+    flag = false;
   }
+  if (role) {
+    if (role == "ADMIN") {
+      redirect("/admin");
+    } else {
+      redirect("/");
+    }
+  } else flag = false;
+  return flag;
 };
 
 export const logout = async () => {

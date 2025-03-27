@@ -10,16 +10,23 @@ import { getSession, login, logout } from "@/services/authServices";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import iconEye from "@/public/ic_eye.svg";
+import iconHidden from "@/public/ic_hidden.svg";
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [visibleIcon, setVisibleIcon] = useState(iconEye);
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    await login(username, password);
+    const isLogin = await login(username, password);
+    if (isLogin) toast.success("Đăng nhập thành công!");
+    else toast.error("Sai tài khoản hoặc mật khẩu!");
   };
 
   return (
@@ -42,19 +49,31 @@ export default function LoginPage() {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Email/Số điện thoại/Tên đăng nhập"
+              placeholder="Email/Số điện thoại/Tên đăng nhập (*)"
               className="w-full text-sm focus:outline-none focus:border-primary py-[10px] px-[20px] rounded border-2 border-gray-300 mt-[24px]"
             />
 
-            <input
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mật khẩu"
-              className="w-full text-sm focus:outline-none focus:border-primary focus:border-2 py-[10px] px-[20px] rounded border-2 border-gray-300 mt-[20px]"
-              type="password"
-              required
-            />
+            <div className="relative flex flex-row items-center mt-[20px]">
+              <input
+                id="pass"
+                placeholder="Mật khẩu (*)"
+                type={visibleIcon == iconEye ? "password" : "text"}
+                className="w-full text-[14px] focus:outline-none focus:border-primary focus:border-2 py-[10px] px-[20px] rounded border-2 border-gray-300"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              ></input>
+              <Image
+                alt="Show/Hidden pass button"
+                className="hover:cursor-pointer absolute right-[16px]"
+                src={visibleIcon}
+                width={20}
+                onClick={() => {
+                  if (visibleIcon == iconEye) setVisibleIcon(iconHidden);
+                  else setVisibleIcon(iconEye);
+                }}
+              />
+            </div>
 
             <button
               type="submit"
@@ -108,6 +127,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

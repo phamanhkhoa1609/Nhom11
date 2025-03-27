@@ -76,14 +76,29 @@ const arrCategory = [
 const HomePage = () => {
   const [productList, setProductList] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(24);
+  const [itemsPerPage, setItemsPerPage] = useState(30);
   const [totalItems, setTotalItems] = useState();
+  const [viewportWidth, setViewportWidth] = useState(0);
 
   const getProductData = async () => {
     const data = await getListProduct(currentPage, itemsPerPage);
     setProductList(data.content);
     setTotalItems(data.totalElements);
   };
+
+  useEffect(() => {
+    const updateViewPortWidth = () => {
+      setViewportWidth(window.innerWidth - 128);
+    };
+
+    updateViewPortWidth();
+
+    window.addEventListener("resize", updateViewPortWidth);
+
+    return () => {
+      window.removeEventListener("resize", updateViewPortWidth);
+    };
+  });
 
   useEffect(() => {
     getProductData();
@@ -96,9 +111,9 @@ const HomePage = () => {
   return (
     <div className="bg-gray-100">
       {/* Badges */}
-      <div className="flex justify-center pt-4 mx-24">
-        <div className="flex flex-grow justify-center gap-11 p-4 bg-white rounded-md">
-          <div className="flex items-center gap-2">
+      <div className="flex justify-center pt-4 mx-32">
+        <div className="flex flex-grow justify-evenly p-4 bg-white rounded-md">
+          <div className="flex items-center gap-2 w-fit">
             <Avatar className="bg-primary flex justify-center items-center text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -213,14 +228,14 @@ const HomePage = () => {
             </Avatar>
             <div className="">
               <div className="text-sm font-bold">Cửa hàng</div>
-              <div className="text-xs text-gray-500">Giờ mở cửa</div>
+              <div className="text-xs text-gray-500">Luôn luôn sẵn sàng</div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Promotion */}
-      <div className="flex justify-center pt-4 mx-24">
+      <div className="flex justify-center pt-4 mx-32">
         <div className="flex flex-grow justify-center p-4 bg-white rounded-md">
           <div className="flex gap-1 w-fit ">
             <div className="w-full">
@@ -231,7 +246,7 @@ const HomePage = () => {
       </div>
 
       {/* Category */}
-      <div className="flex items-center justify-center pt-4 mx-24">
+      <div className="flex items-center justify-center pt-4 mx-32">
         <div className="flex-grow grid grid-cols-6 gap-2 bg-white p-4 rounded-md">
           {arrCategory.map((item, index) => (
             <Link href="/category" key={index}>
@@ -242,10 +257,14 @@ const HomePage = () => {
       </div>
 
       {/* Products */}
-      <div className="flex flex-wrap mx-24 gap-3 justify-start mt-5">
+      <div className="flex flex-wrap mx-32 justify-start mt-5 items-center gap-[16px]">
         {productList.map((item, index) => (
           <Link href={`/product/${item.productSlug}/${item.id}`} key={index}>
-            <ProductCard id={item.id} product={item} />
+            <ProductCard
+              id={item.id}
+              product={item}
+              parentWidth={viewportWidth}
+            />
           </Link>
         ))}
       </div>

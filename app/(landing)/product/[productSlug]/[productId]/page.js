@@ -1,5 +1,4 @@
 "use client";
-
 import { BreadCrumb } from "@/components/custom/BreadCrumb";
 import React from "react";
 import { ProductImage } from "@/components/custom/ProductDetail/ProductImage";
@@ -9,27 +8,28 @@ import { useState, useEffect } from "react";
 import { getProductById } from "@/services/productServices";
 import { useParams } from "next/navigation";
 
-export default function ProductDetail() {
+const Page = () => {
   const [product, setProduct] = new useState({});
   const params = useParams();
 
+  console.log(">>> check router:", params);
   const getProductData = async () => {
     const productData = await getProductById(params.productId);
+    console.log(">>> check product_data:", productData);
     setProduct(productData);
   };
-
+  //get data
   useEffect(() => {
     if (params.productId) {
       getProductData();
     }
   }, [params.productId]);
-
   return (
     <>
       {product && (
-        <div className="bg-gray-100 px-24">
+        <div className="bg-detail px-32 h-screen">
           <BreadCrumb />
-          <div className="flex p-0 bg-white gap-8 rounded-md">
+          <div className="flex p-0 bg-white gap-8">
             <section className="shrink-0 p-4 block" style={{ width: "450px" }}>
               <ProductImage product={product} />
               <ProductSharing />
@@ -42,4 +42,6 @@ export default function ProductDetail() {
       )}
     </>
   );
-}
+};
+
+export default Page;
