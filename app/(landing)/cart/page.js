@@ -1,8 +1,29 @@
-import Image from "next/image";
-import product1 from "@/public/pictures/product/product1.jpg";
+"use client";
 
-const Page = () => {
-  const numbers = [0, 1, 2, 3, 4];
+import { useState, useEffect } from "react";
+import { getAllProductsFromCart } from "@/services/cartServices";
+import { getAccessToken } from "@/services/authServices";
+import { convertPrice } from "@/utils/convertPrice";
+
+export default function CartPage() {
+  const [accessToken, setAccessToken] = useState();
+  const [cartItems, setCartItems] = useState([]);
+
+  const fetchCartItems = async () => {
+    if (accessToken) {
+      setCartItems(await getAllProductsFromCart(accessToken));
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      setAccessToken(await getAccessToken());
+    })();
+  }, []);
+
+  useEffect(() => {
+    fetchCartItems(accessToken);
+  }, [accessToken]);
 
   return (
     <div className="bg-detail w-full px-32 py-10 h-full ">
@@ -33,23 +54,45 @@ const Page = () => {
         </thead>
         <tbody className="bg-detail border-2">
           <tr className="bg-detail h-4"></tr>
-          {numbers.map((cartItem) => (
-            <>
-              <tr key={cartItem} className="bg-white mb-4 font-medium">
-                <td className="flex items-center gap-2 px-12 py-4 text-sm whitespace-nowrap">
+          {cartItems &&
+            cartItems.length > 0 &&
+            cartItems.map((cartItem, index) => (
+              <tr key={`cartItem-${index}`} className="bg-white mb-4">
+                <td className="flex items-center gap-2 px-12 py-4">
                   <input type="checkBox" />
-                  <Image src={product1} alt="Product" className="w-20" />
-                  <p className="text-xs max-w-20">
-                    Chuột không dây Logitech <br /> M330 Silent Plus - Giảm
-                    ồn,...
-                  </p>
+                  <img
+                    src={cartItem.thumbnailUrl}
+                    alt="Product"
+                    className="w-20"
+                  />
+                  <div className="text-sm line-clamp-1">{cartItem.name}</div>
                 </td>
-                <td className="px-2 py-4 text-sm whitespace-nowrap text-center">
-                  Màu: Đen
+                <td className="px-2 py-4 text-sm">
+                  {!cartItem.option && <div>Không có</div>}
+                  {cartItem.option &&
+                    cartItem.option.length > 0 &&
+                    cartItem.option.map((option, index) => (
+                      <div key={option.id}>
+                        <span className="text-gray-500 ">{option.name}:</span>{" "}
+                        {option.value}
+                      </div>
+                    ))}
                 </td>
                 <td className="px-2 py-4 text-sm whitespace-nowrap flex items-center justify-center gap-2">
-                  <div className="text-gray-300 line-through">390.000đ</div>
-                  339.000đ
+                  {cartItem.discountRate > 0 && (
+                    <div className="flex gap-3">
+                      <span className="text-gray-300 line-through">
+                        {convertPrice(cartItem.price)}đ
+                      </span>
+                      {convertPrice(
+                        cartItem.price * (1 - cartItem.discountRate * 0.01)
+                      )}
+                      đ
+                    </div>
+                  )}
+                  {cartItem.discountRate === 0 && (
+                    <div>{convertPrice(cartItem.price)}đ</div>
+                  )}
                 </td>
                 <td className="px-2 py-4 text-sm whitespace-nowrap text-center">
                   <div className="flex items-center justify-center">
@@ -61,9 +104,10 @@ const Page = () => {
                     </button>
                     <input
                       type="text"
-                      value={1}
+                      value={cartItem.quantity}
                       style={{ border: "1px solid rgba(0, 0, 0, .09)" }}
                       className="inline-flex mt-2 p-2 w-12 text-center"
+                      onChange={() => {}}
                     />
                     <button
                       style={{ border: "1px solid rgba(0, 0, 0, .09)" }}
@@ -74,28 +118,30 @@ const Page = () => {
                   </div>
                 </td>
                 <td className="px-2 py-4 text-sm whitespace-nowrap text-center text-primary">
-                  339.000đ
+                  {convertPrice(
+                    cartItem.price *
+                      (1 - cartItem.discountRate * 0.01) *
+                      cartItem.quantity
+                  )}
                 </td>
                 <td className="px-2 py-4 text-sm whitespace-nowrap text-center text-warning">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                     />
                   </svg>
                 </td>
               </tr>
-              <tr className="bg-detail h-4"></tr>
-            </>
-          ))}
+            ))}
         </tbody>
         <tfoot className="bg-white divide-y-2 divide-dashed">
           <tr>
@@ -107,20 +153,20 @@ const Page = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
-                class="w-5 h-5"
+                className="w-5 h-5"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
                 />
               </svg>
               Mã giảm giá
             </td>
             <td
-              cclassName="px-2 py-4 text-sm whitespace-nowrap text-center"
+              className="px-2 py-4 text-sm whitespace-nowrap text-center"
               colSpan={2}
             >
               <p className="text-primary text-end pr-16">Chọn hoặc nhập mã</p>
@@ -150,6 +196,4 @@ const Page = () => {
       </table>
     </div>
   );
-};
-
-export default Page;
+}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getListProduct = async (pageNo, pageSize = 24, sortBy, sortDir) => {
+const getListProduct = async (pageNo, pageSize, sortBy, sortDir) => {
   const res = await axios.get("http://localhost:8080/api/v1/products", {
     params: {
       pageNo,

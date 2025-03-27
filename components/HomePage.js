@@ -1,84 +1,103 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import BorderSide from "./custom/BorderSide";
-import CarouselPromotion from "./custom/CarouselPromotion";
-import smallPromo1 from "@/public/pictures/promotion/smallPromo1.jpg";
-import smallPromo2 from "@/public/pictures/promotion/smallPromo2.jpg";
-import Image from "next/image";
-import ProductCard from "./custom/ProductCard";
 import Link from "next/link";
-import CategoryCard from "./custom/CategoryCard";
+
+import { Avatar } from "@/components/ui/avatar";
+import BorderSide from "@/components/custom/BorderSide";
+import CarouselPromotion from "@/components/custom/CarouselPromotion";
+import ProductCard from "@/components/custom/ProductCard";
+import CategoryCard from "@/components/custom/CategoryCard";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+
 import { getListProduct } from "@/services/productServices";
+import { ArrowUp } from "@/components/icons/arrow-up";
+
+const arrCategory = [
+  {
+    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/ic-dienthoai-desktop.png",
+    name: "Điện thoại",
+  },
+  {
+    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-laptop.png",
+    name: "Laptop",
+  },
+  {
+    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/icon-mtb-desk.png",
+    name: "Máy tính bảng",
+  },
+  {
+    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-icon-gia-dung.png",
+    name: "Hàng gia dụng",
+  },
+  {
+    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-may-lanh.png",
+    name: "Máy lạnh - điều hòa",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/73/0e/89/bf5095601d17f9971d7a08a1ffe98a42.png.webp",
+    name: "Làm đẹp - Sức khỏe",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/40/0f/9b/62a58fd19f540c70fce804e2a9bb5b2d.png.webp",
+    name: "Bách hóa Online",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/00/5d/97/384ca1a678c4ee93a0886a204f47645d.png.webp",
+    name: "Thời trang nam",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/55/5b/80/48cbaafe144c25d5065786ecace86d38.png.webp",
+    name: "Thời trang nữ",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/c8/82/d4/64c561c4ced585c74b9c292208e4995a.png.webp",
+    name: "Điện tử - Điện lạnh",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/2d/7c/45/e4976f3fa4061ab310c11d2a1b759e5b.png.webp",
+    name: "Máy ảnh - Quay phim",
+  },
+  {
+    url: "https://salt.tikicdn.com/cache/100x100/ts/category/3e/c0/30/1110651bd36a3e0d9b962cf135c818ee.png.webp",
+    name: "Balo - Vali",
+  },
+];
 
 const HomePage = () => {
   const [productList, setProductList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(24);
+  const [totalItems, setTotalItems] = useState();
 
   const getProductData = async () => {
-    const data = await getListProduct();
-    // console.log(">>> check product_list:", data);
+    const data = await getListProduct(currentPage, itemsPerPage);
     setProductList(data.content);
+    setTotalItems(data.totalElements);
   };
 
   useEffect(() => {
     getProductData();
-  }, []);
+  }, [currentPage]);
 
-  const arrCategory = [
-    {
-      url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/ic-dienthoai-desktop.png",
-      name: "Điện thoại",
-    },
-    {
-      url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-laptop.png",
-      name: "Laptop",
-    },
-    {
-      url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/icon-mtb-desk.png",
-      name: "Máy tính bảng",
-    },
-    {
-      url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-icon-gia-dung.png",
-      name: "Hàng gia dụng",
-    },
-    {
-      url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-may-lanh.png",
-      name: "Máy lạnh - điều hòa",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/73/0e/89/bf5095601d17f9971d7a08a1ffe98a42.png.webp",
-      name: "Làm đẹp - Sức khỏe",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/40/0f/9b/62a58fd19f540c70fce804e2a9bb5b2d.png.webp",
-      name: "Bách hóa Online",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/00/5d/97/384ca1a678c4ee93a0886a204f47645d.png.webp",
-      name: "Thời trang nam",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/55/5b/80/48cbaafe144c25d5065786ecace86d38.png.webp",
-      name: "Thời trang nữ",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/c8/82/d4/64c561c4ced585c74b9c292208e4995a.png.webp",
-      name: "Điện tử - Điện lạnh",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/2d/7c/45/e4976f3fa4061ab310c11d2a1b759e5b.png.webp",
-      name: "Máy ảnh - Quay phim",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/100x100/ts/category/3e/c0/30/1110651bd36a3e0d9b962cf135c818ee.png.webp",
-      name: "Balo - Vali",
-    },
-  ];
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="bg-gray-100">
       {/* Badges */}
-      <div className="flex justify-center pt-4">
-        <div className="flex justify-center gap-11 w-[1320px] p-4 bg-white rounded-md">
+      <div className="flex justify-center pt-4 mx-24">
+        <div className="flex flex-grow justify-center gap-11 p-4 bg-white rounded-md">
           <div className="flex items-center gap-2">
             <Avatar className="bg-primary flex justify-center items-center text-white">
               <svg
@@ -201,23 +220,19 @@ const HomePage = () => {
       </div>
 
       {/* Promotion */}
-      <div className="flex justify-center pt-4">
-        <div className="flex justify-center w-[1320px] p-4 bg-white rounded-md">
+      <div className="flex justify-center pt-4 mx-24">
+        <div className="flex flex-grow justify-center p-4 bg-white rounded-md">
           <div className="flex gap-1 w-fit ">
             <div className="w-full">
               <CarouselPromotion />
             </div>
-            {/* <div className="space-y-1">
-              <Image src={smallPromo1} width={435} alt="promotion-default" />
-              <Image src={smallPromo2} width={435} alt="promotion-default" />
-            </div> */}
           </div>
         </div>
       </div>
 
       {/* Category */}
-      <div className="flex items-center justify-center pt-4">
-        <div className="grid grid-cols-6 gap-2 bg-white p-4 w-[1320px] rounded-md">
+      <div className="flex items-center justify-center pt-4 mx-24">
+        <div className="flex-grow grid grid-cols-6 gap-2 bg-white p-4 rounded-md">
           {arrCategory.map((item, index) => (
             <Link href="/category" key={index}>
               <CategoryCard categoryItem={item} />
@@ -227,14 +242,86 @@ const HomePage = () => {
       </div>
 
       {/* Products */}
-      <div className="flex flex-wrap mx-24 justify-center gap-3 mt-5">
+      <div className="flex flex-wrap mx-24 gap-3 justify-start mt-5">
         {productList.map((item, index) => (
           <Link href={`/product/${item.productSlug}/${item.id}`} key={index}>
             <ProductCard id={item.id} product={item} />
           </Link>
         ))}
       </div>
+
+      {/* Pagination */}
+      <PaginationSelection
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+
+      <Button
+        className="fixed z-50 bottom-10 right-10 bg-primary"
+        variant="primary"
+        size="icon"
+        onClick={() => scrollToTop()}
+      >
+        <ArrowUp className="size-5 text-white" />
+      </Button>
     </div>
+  );
+};
+
+export const PaginationSelection = ({
+  totalItems,
+  itemsPerPage,
+  currentPage,
+  setCurrentPage,
+}) => {
+  let pages = [];
+  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+    pages.push(i);
+  }
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  return (
+    <Pagination className="pt-4">
+      <PaginationContent className="bg-white rounded-md p-2">
+        <PaginationItem className="hover:cursor-pointer">
+          <PaginationPrevious onClick={() => handlePrevPage()} />
+        </PaginationItem>
+        {pages.map((page, index) => (
+          <PaginationItem
+            key={index}
+            className={
+              currentPage === page - 1
+                ? "bg-primary text-white rounded-md hover:cursor-pointer"
+                : "hover:cursor-pointer"
+            }
+          >
+            <PaginationLink onClick={() => handleCurrentPage(page - 1)}>
+              {page}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+        <PaginationItem className="hover:cursor-pointer">
+          <PaginationNext onClick={() => handleNextPage()} />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 };
 

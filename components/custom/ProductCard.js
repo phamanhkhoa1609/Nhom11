@@ -8,21 +8,21 @@ import { convertNumber } from "@/utils/convertNumber";
 
 const ProductCard = ({ id, product }) => {
   return (
-    <Card className="w-[210px] h-full flex-col justify-between rounded-md p-0 shadow-md hover:border-blue-500 hover:cursor-pointer">
+    <Card className="w-[210px] h-full flex-col justify-between rounded-sm p-0 shadow-none hover:border-blue-500 hover:cursor-pointer">
       <CardHeader>
         <img
           src={product.thumbnailUrl}
-          className="w-full h-[200px]"
+          className="w-full h-[200px] rounded-sm"
           alt="product-prototype"
         />
       </CardHeader>
-      <CardContent className="px-2 space-y-2 py-2">
+      <CardContent className="flex flex-col flex-grow px-2 justify-between py-2">
         {/* Tên sp */}
         <div className="text-xs">{trimText(product.name, 50)}</div>
 
         {/* Giá tiền */}
-        <div className="flex gap-2">
-          <div className="flex text-warning">
+        <div className="flex gap-2 items-center justify-between">
+          <div className="flex text-black font-semibold">
             <div className="">₫</div>
             <div>
               {convertPrice(
@@ -33,10 +33,10 @@ const ProductCard = ({ id, product }) => {
 
           {product.discountRate > 0 && (
             <>
-              <div className="flex text-gray-500 line-through text-xs">
+              {/* <div className="flex text-gray-500 line-through text-xs">
                 <div className="text-xs">₫</div>
                 <div>{trimText(convertPrice(product.price), 7)}</div>
-              </div>
+              </div> */}
               <div className="bg-red-100 text-warning text-xs h-fit">
                 -{product.discountRate}%
               </div>

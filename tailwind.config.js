@@ -20,6 +20,7 @@ module.exports = {
       colors: {
         bodydark1: "#DEE4EE",
         bodydark: "#AEB7C0",
+        "meta-2": "#EFF2F7",
         black: "#1C2434",
         whiten: "#F1F5F9",
         whiter: "#F5F7FD",

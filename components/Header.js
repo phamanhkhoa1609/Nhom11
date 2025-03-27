@@ -37,8 +37,8 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="flex justify-center px-32 py-2">
-      <div className="pb-1 pt-2 bg-white grid grid-cols-12 items-start">
+    <div className="sticky top-0 z-50 flex justify-center px-32 py-2 bg-white">
+      <div className="pb-1 pt-2 grid grid-cols-12 items-start">
         {/* Logo */}
         <Link href="/" className={`${nunito.className} w-fit`}>
           <div className="flex-col items-center text-primary justify-center">
