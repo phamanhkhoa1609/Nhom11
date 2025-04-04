@@ -18,6 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        darkblue: "#0E1C2E",
         bodydark1: "#DEE4EE",
         bodydark: "#AEB7C0",
         "meta-2": "#EFF2F7",

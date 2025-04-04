@@ -4,7 +4,7 @@ import HeaderWithoutSearch from "@/components/HeaderWithoutSearch";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function LoginLayout({ children }) {
+export default function AuthenLayout({ children }) {
   const pathName = usePathname();
   const [title, setTitle] = useState("");
   useEffect(() => {
