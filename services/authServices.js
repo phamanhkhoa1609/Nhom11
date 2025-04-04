@@ -82,14 +82,52 @@ export const login = async (username, password) => {
   return flag;
 };
 
-export const logout = async () => {
+export const refreshToken = async (refresh_token) => {
+  let data = {
+    grant_type: "refresh_token",
+    client_id: "client",
+    client_secret: "secret",
+    refresh_token: refresh_tokens,
+  };
+
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "http://localhost:8080/api/oauth2/v1/token",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: data,
+  };
+
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/api/oauth2/v1/token",
+      data,
+      config
+    );
+
+    if (res && res.data) {
+      const cookieStore = cookies();
+      const { access_token: accessToken, refresh_token: refreshToken } =
+        res.data;
+
+      cookieStore.set("accessToken", accessToken);
+      cookieStore.set("refreshToken", refreshToken);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const logout = () => {
   const cookieStore = cookies();
   cookieStore.delete("accessToken");
   cookieStore.delete("refreshToken");
   redirect("/login");
 };
 
-export const getSession = async () => {
+export const getSession = () => {
   const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
   if (accessToken) {
@@ -105,6 +143,16 @@ export const getAccessToken = async () => {
   const accessToken = cookieStore.get("accessToken")?.value;
   if (accessToken) {
     return accessToken;
+  } else {
+    return undefined;
+  }
+};
+
+export const getRefreshToken = () => {
+  const cookieStore = cookies();
+  const refreshToken = cookieStore.get("refreshToken")?.value;
+  if (refreshToken) {
+    return refreshToken;
   } else {
     return undefined;
   }

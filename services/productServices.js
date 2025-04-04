@@ -31,4 +31,28 @@ const getProductById = async (productId) => {
   }
 };
 
-export { getListProduct, getProductById };
+const createProduct = async (product, token) => {
+  let data = product;
+
+  let config = {
+    maxBodyLength: Infinity,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const res = await axios.post(
+      "http://localhost:8080/api/v1/products",
+      data,
+      config
+    );
+    if (res && res.data) {
+      return res;
+    }
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export { getListProduct, getProductById, createProduct };

@@ -16,6 +16,8 @@ export function CustomAlertDialog({
   itemTrigger,
   title,
   content,
+  confirmContent,
+  cancelContent,
   onConfirm,
   onCancel,
 }) {
@@ -36,7 +38,7 @@ export function CustomAlertDialog({
               onCancel && onCancel();
             }}
           >
-            <div className="text-blue-600">Cancel</div>
+            <div className="text-blue-600">{cancelContent}</div>
           </button>
           <button
             className="bg-blue-600 py-[8px] px-[16px] hover:opacity-80 rounded-[6px]"
@@ -45,7 +47,7 @@ export function CustomAlertDialog({
               onConfirm && onConfirm();
             }}
           >
-            <div className="text-white">Continue</div>
+            <div className="text-white">{confirmContent}</div>
           </button>
         </AlertDialogFooter>
       </AlertDialogContent>
