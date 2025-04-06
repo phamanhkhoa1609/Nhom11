@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import { CustomAlertDialog } from "./CustomAlertDialog";
 
-export function CustomCreateDialog({
+export function CustomUpdateDialog({
   itemTrigger,
   title,
   itemContent,
@@ -62,13 +62,13 @@ export function CustomCreateDialog({
                   {confirmContent}
                 </button>
               }
-              title={"Bạn có chắc chắn muốn thêm sản phẩm này?"}
-              content={"Sản phẩm sẽ được thêm vào danh sách sản phẩm."}
+              title={"Bạn có chắc chắn muốn cập nhật sản phẩm này?"}
+              content={"Thông tin của sản phẩm sẽ được cập nhật."}
               onConfirm={() => {
                 setOpen(false);
                 onConfirm && onConfirm();
               }}
-              confirmContent={"Thêm"}
+              confirmContent={"Cập nhật"}
               cancelContent={"Hủy"}
             />
           </div>

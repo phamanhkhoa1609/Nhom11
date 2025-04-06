@@ -28,6 +28,7 @@ export const ProductInfoForm = ({
   onOptionValueChange,
   onOptionAdd,
   onOptionRemove,
+  productThumbnailUrl,
 }) => {
   return (
     <>
@@ -43,6 +44,15 @@ export const ProductInfoForm = ({
               <ImagePicker onFileAccepted={onFileAccepted} />
               <div className=" flex items-center justify-center">
                 <div className="w-[240px] h-[240px]">
+                  {productThumbnailUrl && selectedFiles.length <= 0 && (
+                    <div className="ml-[16px] rounded-[8px]">
+                      <img
+                        src={productThumbnailUrl}
+                        alt={productThumbnailUrl}
+                        className="w-[240px] h-[240px]"
+                      />
+                    </div>
+                  )}
                   {selectedFiles.length > 0 && (
                     <div>
                       {selectedFiles.map((file, index) => (
@@ -163,7 +173,7 @@ export const ProductInfoForm = ({
                     value={productDescription || ""}
                     onChange={onProductDescriptionChange}
                     className="border-[1.5px] border-gray-300 bg-gray-50 focus:outline-none focus:border-blue-600 focus:border-[1.5px] text-black text-sm py-[8px] px-[16px] rounded-[6px] w-full mt-[4px] pr-[32px]"
-                    rows="7"
+                    rows="11"
                   ></textarea>
                 </div>
               </div>

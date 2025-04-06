@@ -55,4 +55,55 @@ const createProduct = async (product, token) => {
   }
 };
 
-export { getListProduct, getProductById, createProduct };
+const updateProductById = async (product, token, id) => {
+  let data = product;
+
+  let config = {
+    maxBodyLength: Infinity,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const res = await axios.put(
+      `http://localhost:8080/api/v1/products/${id}`,
+      data,
+      config
+    );
+    if (res && res.data) {
+      return res;
+    }
+  } catch (error) {
+    return error.response;
+  }
+};
+
+const deleteProductById = async (token, id) => {
+  let config = {
+    maxBodyLength: Infinity,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const res = await axios.delete(
+      `http://localhost:8080/api/v1/products/${id}`,
+      config
+    );
+    if (res && res.data) {
+      return res;
+    }
+  } catch (error) {
+    return error.response;
+  }
+};
+
+export {
+  getListProduct,
+  getProductById,
+  createProduct,
+  updateProductById,
+  deleteProductById,
+};
