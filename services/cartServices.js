@@ -29,7 +29,7 @@ export const addToCart = async (
     .catch((error) => console.error(error));
 };
 
-export const getAllProductsFromCart = async (accessToken) => {
+export const getCart = async (accessToken) => {
   let config = {
     maxBodyLength: Infinity,
     headers: {
@@ -38,12 +38,74 @@ export const getAllProductsFromCart = async (accessToken) => {
   };
 
   try {
-    const res = await axios.get("http://localhost:8080/api/v1/carts", config);
+    const response = await axios.get(
+      `http://localhost:8080/api/v1/carts`,
+      config
+    );
 
-    if (res && res.data) {
-      return res.data;
-    } else throw new Error("Failed to fetch cart.");
+    if (response && response.data) {
+      return response.data;
+    }
   } catch (error) {
     console.log(error);
   }
+};
+
+export const updateCart = async (
+  productId,
+  productItemId,
+  delta,
+  accessToken
+) => {
+  let data = JSON.stringify({
+    productItemId: productItemId,
+    productId: productId,
+    delta: delta,
+  });
+
+  let config = {
+    method: "put",
+    maxBodyLength: Infinity,
+    url: "http://localhost:8080/api/v1/carts",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    data: data,
+  };
+
+  axios
+    .request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const deleteCart = async (productId, productItemId, accessToken) => {
+  let data = JSON.stringify({
+    productItemId: productItemId,
+    productId: productId,
+  });
+
+  let config = {
+    method: "delete",
+    maxBodyLength: Infinity,
+    url: "http://localhost:8080/api/v1/carts",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    data: data,
+  };
+  axios
+    .request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };

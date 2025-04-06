@@ -4,7 +4,7 @@ import React from "react";
 import SearchInput from "@/components/custom/SearchInput";
 import {
   createProduct,
-  deleteProductById,
+  deleteCart,
   getListProduct,
   updateProductById,
 } from "@/services/productServices";
@@ -131,7 +131,7 @@ const ProductAdminPage = () => {
               } catch (error) {
                 console.log(error);
               }
-              const res = await deleteProductById(
+              const res = await deleteCart(
                 token,
                 productList[selectedProduct].id
               );
@@ -210,15 +210,9 @@ const ProductAdminPage = () => {
                   setProductDiscount(productList[selectedProduct].discountRate);
                   setProductQuantity(productList[selectedProduct].quantitySold);
                   setProductSpecList(
-                    productList[selectedProduct].specifications.map((spec) => {
-                      return { name: spec.name, value: spec.value };
-                    })
+                    productList[selectedProduct].specifications
                   );
-                  setProductOptionList(
-                    productList[selectedProduct].options.map((option) => {
-                      return { name: option.name, value: option.value };
-                    })
-                  );
+                  setProductOptionList(productList[selectedProduct].options);
                 }}
               >
                 <Image

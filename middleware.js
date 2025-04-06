@@ -21,7 +21,7 @@ export async function middleware(request) {
   const isProtectedRoute = protectedRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoute.includes(nextUrl.pathname);
 
-  if (isAdminRoute && isAuthenticated && userRole != "ADMIN") {
+  if (isAdminRoute && userRole != "ADMIN") {
     return Response.redirect(new URL("/", nextUrl));
   }
 

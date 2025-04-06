@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { convertPrice } from "@/utils/convertPrice";
 import { Button } from "@/components/ui/button";
-import { addToCart, getAllProductsFromCart } from "@/services/cartServices";
+import { addToCart, getCart } from "@/services/cartServices";
 import { getAccessToken } from "@/services/authServices";
 
 export const ProductInformation = ({ product }) => {
@@ -13,8 +13,13 @@ export const ProductInformation = ({ product }) => {
   const [optionsValue, setOptionsValue] = useState([]);
 
   const handleAddToCart = async () => {
-    const productsInCart = await getAllProductsFromCart(accessToken);
+    const productsInCart = await getCart(accessToken);
     let finalQuantity = quantity;
+
+    if (productsInCart.length === 0) {
+      await addToCart(productItemId, productId, finalQuantity, accessToken);
+      return;
+    }
 
     for (let i = 0; i < productsInCart.length; i++) {
       if (product.id === productsInCart[i].id) {
