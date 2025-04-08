@@ -20,61 +20,12 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { getListProduct } from "@/services/productServices";
+import { getCategories } from "@/services/categoryServices";
 import { ArrowUp } from "@/components/icons/arrow-up";
-
-const arrCategory = [
-  {
-    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/ic-dienthoai-desktop.png",
-    name: "Điện thoại",
-  },
-  {
-    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-laptop.png",
-    name: "Laptop",
-  },
-  {
-    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/icon-mtb-desk.png",
-    name: "Máy tính bảng",
-  },
-  {
-    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-icon-gia-dung.png",
-    name: "Hàng gia dụng",
-  },
-  {
-    url: "https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-may-lanh.png",
-    name: "Máy lạnh - điều hòa",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/73/0e/89/bf5095601d17f9971d7a08a1ffe98a42.png.webp",
-    name: "Làm đẹp - Sức khỏe",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/40/0f/9b/62a58fd19f540c70fce804e2a9bb5b2d.png.webp",
-    name: "Bách hóa Online",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/00/5d/97/384ca1a678c4ee93a0886a204f47645d.png.webp",
-    name: "Thời trang nam",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/55/5b/80/48cbaafe144c25d5065786ecace86d38.png.webp",
-    name: "Thời trang nữ",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/c8/82/d4/64c561c4ced585c74b9c292208e4995a.png.webp",
-    name: "Điện tử - Điện lạnh",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/2d/7c/45/e4976f3fa4061ab310c11d2a1b759e5b.png.webp",
-    name: "Máy ảnh - Quay phim",
-  },
-  {
-    url: "https://salt.tikicdn.com/cache/100x100/ts/category/3e/c0/30/1110651bd36a3e0d9b962cf135c818ee.png.webp",
-    name: "Balo - Vali",
-  },
-];
 
 const HomePage = () => {
   const [productList, setProductList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const [totalItems, setTotalItems] = useState();
@@ -84,6 +35,12 @@ const HomePage = () => {
     const data = await getListProduct(currentPage, itemsPerPage);
     setProductList(data.content);
     setTotalItems(data.totalElements);
+  };
+
+  const getCategoryData = async () => {
+    const data = await getCategories();
+    console.log(">>> check cate:", data);
+    setCategoryList(data);
   };
 
   useEffect(() => {
@@ -102,6 +59,7 @@ const HomePage = () => {
 
   useEffect(() => {
     getProductData();
+    getCategoryData();
   }, [currentPage]);
 
   const scrollToTop = () => {
@@ -247,9 +205,9 @@ const HomePage = () => {
 
       {/* Category */}
       <div className="flex items-center justify-center pt-4 mx-32">
-        <div className="flex-grow grid grid-cols-6 gap-2 bg-white p-4 rounded-md">
-          {arrCategory.map((item, index) => (
-            <Link href="/category" key={index}>
+        <div className="flex-grow grid grid-cols-6 gap-2 bg-white p-4 rounded">
+          {categoryList.map((item, index) => (
+            <Link href={`/category/${item.urlKey}/${item.id}`} key={index}>
               <CategoryCard categoryItem={item} />
             </Link>
           ))}
@@ -257,7 +215,7 @@ const HomePage = () => {
       </div>
 
       {/* Products */}
-      <div className="flex flex-wrap mx-32 justify-start mt-5 items-center gap-[16px]">
+      <div className="flex flex-wrap mx-32 justify-start mt-5 items-center gap-[14px]">
         {productList.map((item, index) => (
           <Link href={`/product/${item.productSlug}/${item.id}`} key={index}>
             <ProductCard

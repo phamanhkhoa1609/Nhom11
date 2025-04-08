@@ -40,7 +40,6 @@ const ProductAdminPage = () => {
     "Lượt đánh giá",
     "Số lượng",
   ];
-  const [totalProductQuantity, setTotalProductQuantity] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(-1);
   const [productSpecList, setProductSpecList] = useState([]);
   const [productOptionList, setProductOptionList] = useState([]);
@@ -95,7 +94,7 @@ const ProductAdminPage = () => {
         <div className="flex flex-row items-center mr-[64px]">
           <div className="text-[18px] font-semibold">All products</div>
           <div className="px-[8px] py-[1px] bg-blue-600 text-white text-[14px] rounded-[16px] ml-[12px] flex items-center justify-center">
-            {totalProductQuantity}
+            {totalItems}
           </div>
         </div>
 
@@ -210,9 +209,15 @@ const ProductAdminPage = () => {
                   setProductDiscount(productList[selectedProduct].discountRate);
                   setProductQuantity(productList[selectedProduct].quantitySold);
                   setProductSpecList(
-                    productList[selectedProduct].specifications
+                    productList[selectedProduct].specifications.map((spec) => {
+                      return { name: spec.name, value: spec.value };
+                    })
                   );
-                  setProductOptionList(productList[selectedProduct].options);
+                  setProductOptionList(
+                    productList[selectedProduct].options.map((option) => {
+                      return { name: option.name, value: option.value };
+                    })
+                  );
                 }}
               >
                 <Image
@@ -301,7 +306,9 @@ const ProductAdminPage = () => {
                 }}
                 productThumbnailUrl={
                   selectedProduct != -1 &&
-                  productList[selectedProduct].thumbnailUrl
+                  productList[selectedProduct] != undefined
+                    ? productList[selectedProduct].thumbnailUrl
+                    : null
                 }
               />
             }
@@ -441,7 +448,7 @@ const ProductAdminPage = () => {
       </div>
 
       {/* Product table data */}
-      <div className="py-[10px] flex flex-col justify-between items-center grow px-[32px] py-[20px] w-full">
+      <div className="flex flex-col justify-between items-center grow px-[32px] py-[20px] w-full">
         <CustomTable
           data={productList}
           renderRow={(item, index) => (

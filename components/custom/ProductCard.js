@@ -8,15 +8,15 @@ import { convertNumber } from "@/utils/convertNumber";
 
 const ProductCard = ({ id, product }) => {
   return (
-    <Card className="w-fix h-full flex-col justify-between rounded-sm p-[8px] shadow-none hover:border-blue-500 hover:cursor-pointer">
+    <Card className="w-full h-full flex-col justify-between rounded-sm p-[8px] shadow-none hover:border-blue-500 hover:cursor-pointer">
       <CardHeader>
         <img
           src={product.thumbnailUrl}
-          className="rounded-sm self-center h-[178px] w-[178px]"
+          className="rounded-sm self-center h-[178px] w-[181px]"
           alt="product-prototype"
         />
       </CardHeader>
-      <CardContent className="flex flex-col flex-grow justify-between mt-[8px] w-[178px]">
+      <CardContent className="flex flex-col flex-grow justify-between mt-[8px] w-[181px]">
         {/* Tên sp */}
         <div className="text-xs h-[2.5em] line-clamp-2">
           {trimText(product.name, 50)}
@@ -46,7 +46,7 @@ const ProductCard = ({ id, product }) => {
           )}
         </div>
 
-        <div className="flex text-xs items-center mt-2 gap-2">
+        <div className="flex text-xs items-center mt-2 gap-2 justify-between">
           <div className="flex items-center">
             {Array.from({ length: 5 }).map((_, index) => (
               <svg
@@ -61,8 +61,12 @@ const ProductCard = ({ id, product }) => {
               </svg>
             ))}
           </div>
-          <div className="text-gray-500">({product.reviewCount})</div>
-          <div>Đã bán {convertNumber(product.quantitySold, 1)}</div>
+          <div className="flex justify-between w-full mt-px">
+            <div className="text-gray-500">
+              ({convertNumber(product.reviewCount)})
+            </div>
+            <div>Đã bán {convertNumber(product.quantitySold, 1)}</div>
+          </div>
         </div>
       </CardContent>
     </Card>
