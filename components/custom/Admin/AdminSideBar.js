@@ -39,7 +39,7 @@ const AdminSideBar = ({ menu, others }) => {
             }}
           >
             <div
-              className="flex flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]"
+              className="flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]"
               style={{
                 backgroundColor:
                   selectedTab === item.name ? "#0077B6" : "transparent",
@@ -70,7 +70,7 @@ const AdminSideBar = ({ menu, others }) => {
               }}
             >
               <div
-                className="flex flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]"
+                className="flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]"
                 style={{
                   backgroundColor:
                     selectedTab === item.name ? "#0077B6" : "transparent",
@@ -95,7 +95,7 @@ const AdminSideBar = ({ menu, others }) => {
               }}
             >
               <div
-                className="flex flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]"
+                className="flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]"
                 style={{
                   backgroundColor:
                     selectedTab === item.name ? "#0077B6" : "transparent",

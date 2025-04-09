@@ -5,6 +5,7 @@ import SearchInput from "@/components/custom/SearchInput";
 import {
   createProduct,
   deleteCart,
+  deleteProductById,
   getListProduct,
   updateProductById,
 } from "@/services/productServices";
@@ -31,14 +32,14 @@ const ProductAdminPage = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [totalItems, setTotalItems] = useState();
   const productField = [
-    "Ảnh",
-    "Tên",
-    "Hãng",
-    "Giá",
-    "Giảm giá",
-    "Đánh giá",
-    "Lượt đánh giá",
-    "Số lượng",
+    { name: "Ảnh", width: "6%" },
+    { name: "Tên", width: "36%" },
+    { name: "Hãng", width: "11%" },
+    { name: "Giá", width: "11%" },
+    { name: "Giảm giá", width: "7%" },
+    { name: "Đánh giá", width: "7%" },
+    { name: "Lượt đánh giá", width: "9.5%" },
+    { name: "Số lượng", width: "9.5%" },
   ];
   const [selectedProduct, setSelectedProduct] = useState(-1);
   const [productSpecList, setProductSpecList] = useState([]);
@@ -130,7 +131,7 @@ const ProductAdminPage = () => {
               } catch (error) {
                 console.log(error);
               }
-              const res = await deleteCart(
+              const res = await deleteProductById(
                 token,
                 productList[selectedProduct].id
               );
@@ -150,6 +151,8 @@ const ProductAdminPage = () => {
 
           {/* Update product dialog */}
           <CustomUpdateDialog
+            confirmDialogTitle={"Bạn có chắc chắn muốn cập nhật sản phẩm này?"}
+            confirmDialogContent={"Thông tin của sản phẩm sẽ được cập nhật."}
             confirmContent={"Cập nhật"}
             onConfirm={async () => {
               console.log("Confirm update product");
@@ -171,8 +174,8 @@ const ProductAdminPage = () => {
                   discountRate: productDiscount,
                   quantitySold: productQuantity,
                   thumbnailUrl: imgURL,
-                  options: productSpecList,
-                  specifications: productOptionList,
+                  options: productOptionList,
+                  specifications: productSpecList,
                   categoryUrl: "new-cate",
                 },
                 token,
@@ -316,6 +319,10 @@ const ProductAdminPage = () => {
 
           {/* Create product dialog */}
           <CustomCreateDialog
+            confirmDialogTitle={"Bạn có chắc chắn muốn thêm sản phẩm này?"}
+            confirmDialogContent={
+              "Sản phẩm sẽ được thêm vào danh sách sản phẩm."
+            }
             confirmContent={"Thêm"}
             onConfirm={async () => {
               console.log("Confirm create product");
@@ -337,8 +344,8 @@ const ProductAdminPage = () => {
                   discountRate: productDiscount,
                   quantitySold: productQuantity,
                   thumbnailUrl: imgURL,
-                  options: productSpecList,
-                  specifications: productOptionList,
+                  options: productOptionList,
+                  specifications: productSpecList,
                   categoryUrl: "new-cate",
                 },
                 token

@@ -98,36 +98,36 @@ export const ProductInformation = ({ product }) => {
   // console.log(productItemId.toString());
   // console.log(accessToken);
 
+  const starsCount = Math.round(product.ratingAverage);
+
   return (
     <>
       {product && (
         <div className="w-100 pt-5 pl-5 pr-9">
           {/* Product Name */}
-          <div className="text-xl font-medium leading-6 flex">
+          <div className="text-2xl font-medium leading-6 flex">
             <span>{product.name}</span>
           </div>
           {/* Product Rating */}
           <div className="mt-3">
             <div className="cursor-pointer flex items-center gap-1">
-              <span className="text-red-500 underline">
+              <span className="text-black font-semibold">
                 {product.ratingAverage}
               </span>
               <div className="flex gap-1 items-center">
-                {Array.from({ length: 5 }, (_, index) => (
-                  <span key={index}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="red"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <svg
+                    key={index}
+                    className={`size-4 ${
+                      index < starsCount ? "text-yellow-300" : "text-gray-400"
+                    }`}
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 22 20"
+                  >
+                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                  </svg>
                 ))}
               </div>
             </div>
@@ -144,13 +144,13 @@ export const ProductInformation = ({ product }) => {
                     )}
                   </div>
                 )}
-                <div className="text-2xl text-red-500">
+                <div className="text-2xl text-black">
                   ₫{convertPrice(product.price)}
                 </div>
                 {product.discountRate > 0 && (
                   <>
                     {" "}
-                    <div className="uppercase text-sm text-white bg-red-500 p-1 rounded-sm">
+                    <div className="uppercase text-sm text-white bg-blue-500 p-1 rounded-sm">
                       {product.discountRate}% Giảm
                     </div>
                   </>
@@ -175,7 +175,7 @@ export const ProductInformation = ({ product }) => {
                           variant="outline"
                           className={
                             optionValue.id === productItemId[index]
-                              ? "border-primary text-primary"
+                              ? "border-primary text-primary hover:bg-blue-50 hover:text-blue-500"
                               : ""
                           }
                           onClick={() => {
@@ -193,8 +193,8 @@ export const ProductInformation = ({ product }) => {
               ))}
           </div>
           {/* Quantity */}
-          <div className="flex items-center gap-4 text-sm mt-6 h-8">
-            <div className="w-28 mt-2 text-gray-500">Số lượng </div>
+          <div className="flex items-center gap-3 text-sm mt-6 h-8">
+            <div className="w-24 mt-2 text-gray-500">Số lượng </div>
             <div className="flex items-center">
               <button
                 style={{ border: "1px solid rgba(0, 0, 0, .09)" }}
@@ -217,15 +217,15 @@ export const ProductInformation = ({ product }) => {
               >
                 +
               </button>
-              <label className="text-gray-500 items-center inline-flex ms-4 mt-2">
+              {/* <label className="text-gray-500 items-center inline-flex ms-4 mt-2">
                 9999 sản phẩm có sẵn
-              </label>
+              </label> */}
             </div>
           </div>
           {/* Add To Cart */}
-          <div className="mt-4 flex w-100 pt-5 pl-5 pr-9 text-sm">
+          <div className="mt-4 flex w-100 pt-5 pr-9 text-sm">
             <button
-              className="inline-flex items-center bg-orange-100 border border-red-500 text-red-500 px-5 py-3 mr-4"
+              className="inline-flex items-center border border-blue-500 text-blue-500 bg-cyan-50 hover:bg-blue-50 px-5 py-3 mr-4"
               onClick={() => handleAddToCart()}
             >
               <svg
@@ -244,7 +244,7 @@ export const ProductInformation = ({ product }) => {
               </svg>
               Thêm Vào Giỏ Hàng
             </button>
-            <button className="inline-flex items-center bg-red-500 text-white px-5 py-3">
+            <button className="inline-flex items-center bg-red-500 hover:bg-red-400 text-white justify-center px-5 py-3 w-40">
               Mua Ngay
             </button>
           </div>

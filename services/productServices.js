@@ -79,7 +79,7 @@ const updateProductById = async (product, token, id) => {
   }
 };
 
-const deleteCart = async (token, id) => {
+const deleteProductById = async (token, id) => {
   let config = {
     maxBodyLength: Infinity,
     headers: {
@@ -105,5 +105,5 @@ export {
   getProductById,
   createProduct,
   updateProductById,
-  deleteCart,
+  deleteProductById,
 };

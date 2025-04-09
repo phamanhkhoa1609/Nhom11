@@ -12,20 +12,11 @@ const CustomTable = ({ data, renderRow, field }) => {
           {field.map((item, index) => (
             <th
               style={{
-                width:
-                  item === "Tên"
-                    ? "36%"
-                    : item === "Ảnh"
-                    ? "6%"
-                    : item === "Giảm giá" || item === "Đánh giá"
-                    ? "7%"
-                    : item === "Giá" || item === "Hãng"
-                    ? "11%"
-                    : "9.5%",
+                width: !item.width ? "auto" : `${item.width}`,
               }}
               key={index}
             >
-              {item}
+              {item.name}
             </th>
           ))}
         </tr>

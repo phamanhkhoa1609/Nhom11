@@ -11,14 +11,14 @@ export const ProductImage = ({ product }) => {
           className="w-[400px]"
         />
       </div>
-      <div className="flex border border-yellow-600 relative">
+      {/* <div className="flex border border-yellow-600 relative">
         <div className="flex w-100 relative mx-2 my-1">
           <ProductImageSlide alt={"image-slide"} />
           <ProductImageSlide alt={"image-slide"} />
           <ProductImageSlide alt={"image-slide"} />
           <ProductImageSlide alt={"image-slide"} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
