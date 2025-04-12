@@ -191,7 +191,7 @@ const accountPage = () => {
                   </div>
                 </div>
 
-                <div className="mb-5.5 pt-2">
+                {/* <div className="mb-5.5 pt-2">
                   <div className="flex gap-2">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -212,7 +212,7 @@ const accountPage = () => {
                       />
                     </svg>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Các nút lưu và hủy ở cột 1*/}
                 <div className="flex justify-end gap-2 mt-4">

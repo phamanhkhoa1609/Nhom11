@@ -20,24 +20,39 @@ import { useEffect, useState } from "react";
 import DialogAddress from "./custom/DialogAddress";
 import smileLogo from "./../public/ic_smile.svg";
 import Image from "next/image";
+import { getCart } from "@/services/cartServices";
 
 const Header = () => {
   const router = useRouter();
 
   const [userInfo, setUserInfo] = useState();
+  const [cartItems, setCartItems] = useState([]);
+  const [accessToken, setAccessToken] = useState();
 
   const getUserInfo = async () => {
-    const session = await getSession();
-    const accessToken = await getAccessToken();
+    const session = getSession();
 
     if (session) {
       setUserInfo(await getUserByProfile(accessToken));
     }
   };
 
+  const fetchCartItems = async () => {
+    setCartItems(await getCart(accessToken));
+  };
+
   useEffect(() => {
+    (async () => {
+      setAccessToken(await getAccessToken());
+    })();
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    fetchCartItems(accessToken);
+  }, [accessToken]);
+
+  console.log("cartItems from header", cartItems);
 
   return (
     <div className="sticky top-0 z-50 flex flex-row justify-between items-center px-32 py-2 bg-white w-full">
@@ -133,7 +148,7 @@ const Header = () => {
             />
           </svg>
           <div className="mb-3 w-5 h-4 rounded-full text-white flex items-center justify-center text-xs bg-red-500">
-            0
+            {cartItems?.length ?? 0}
           </div>
         </Link>
       </div>

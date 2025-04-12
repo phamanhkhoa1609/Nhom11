@@ -22,11 +22,18 @@ export const addToCart = async (
     body: raw,
     redirect: "follow",
   };
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/v1/carts",
+      requestOptions
+    );
 
-  await fetch("http://localhost:8080/api/v1/carts", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
+    const successText = response.text();
+    return successText;
+  } catch (error) {
+    const errorText = error.text();
+    return errorText;
+  }
 };
 
 export const getCart = async (accessToken) => {
@@ -103,6 +110,26 @@ export const deleteCart = async (productId, productItemId, accessToken) => {
   };
   try {
     const response = await axios.request(config);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteAllCart = async (accessToken) => {
+  let config = {
+    method: "delete",
+    maxBodyLength: Infinity,
+    url: "http://localhost:8080/api/v1/carts/all",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  try {
+    const response = axios.request(config);
 
     if (response) {
       return response;

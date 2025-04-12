@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import { getCart, updateCart, deleteCart } from "@/services/cartServices";
 import { getAccessToken } from "@/services/authServices";
 import { convertPrice } from "@/utils/convertPrice";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const [accessToken, setAccessToken] = useState();
   const [cartItems, setCartItems] = useState([]);
+
+  const router = useRouter();
 
   const fetchCartItems = async () => {
     setCartItems(await getCart(accessToken));
@@ -83,10 +86,10 @@ export default function CartPage() {
     for (let i = 0; i < cartItems.length; i++) {
       total +=
         cartItems[i].price *
-        (1 - cartItems[i].discountRate) *
+        (100 - cartItems[i].discountRate) *
         cartItems[i].quantity;
     }
-    return total;
+    return total / 100;
   };
 
   console.log(cartItems);
@@ -293,7 +296,12 @@ export default function CartPage() {
                 <span className="text-primary text-lg">
                   đ{convertPrice(calculateTotalPrice())}
                 </span>
-                <button className="px-16 bg-primary text-white py-3 rounded-md ms-8">
+                <button
+                  className="px-16 bg-primary text-white py-3 rounded-md ms-8"
+                  onClick={() => {
+                    router.push(`/purchase`);
+                  }}
+                >
                   Mua hàng
                 </button>
               </td>

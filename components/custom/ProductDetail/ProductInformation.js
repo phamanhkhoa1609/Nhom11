@@ -3,6 +3,9 @@ import { convertPrice } from "@/utils/convertPrice";
 import { Button } from "@/components/ui/button";
 import { addToCart, getCart } from "@/services/cartServices";
 import { getAccessToken } from "@/services/authServices";
+import { ShoppingCart } from "@/components/icons/shopping-cart";
+import { Toaster } from "@/components/ui/toaster";
+import { toast, useToast } from "@/components/ui/use-toast";
 
 export const ProductInformation = ({ product }) => {
   const [accessToken, setAccessToken] = useState("");
@@ -35,9 +38,28 @@ export const ProductInformation = ({ product }) => {
       }
     }
 
-    console.log({ productItemId, productId, finalQuantity, accessToken });
+    // console.log({ productItemId, productId, finalQuantity, accessToken });
 
-    await addToCart(productItemId, productId, finalQuantity, accessToken);
+    const response = await addToCart(
+      productItemId,
+      productId,
+      finalQuantity,
+      accessToken
+    );
+
+    console.log(response);
+
+    if (response === "Add to cart successfully!") {
+      toast({
+        title: "Giỏ hàng",
+        description: "Thêm đơn hàng thành công!",
+      });
+    } else {
+      toast({
+        title: "Giỏ hàng",
+        description: "Thêm đơn hàng thất bại!",
+      });
+    }
   };
 
   const incQuantity = () => {
@@ -97,6 +119,7 @@ export const ProductInformation = ({ product }) => {
 
   // console.log(productItemId.toString());
   // console.log(accessToken);
+  console.log(product);
 
   const starsCount = Math.round(product.ratingAverage);
 
@@ -224,30 +247,12 @@ export const ProductInformation = ({ product }) => {
           </div>
           {/* Add To Cart */}
           <div className="mt-4 flex w-100 pt-5 pr-9 text-sm">
-            <button
-              className="inline-flex items-center border border-blue-500 text-blue-500 bg-cyan-50 hover:bg-blue-50 px-5 py-3 mr-4"
-              onClick={() => handleAddToCart()}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5 mr-2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                />
-              </svg>
-              Thêm Vào Giỏ Hàng
-            </button>
-            <button className="inline-flex items-center bg-red-500 hover:bg-red-400 text-white justify-center px-5 py-3 w-40">
-              Mua Ngay
-            </button>
+            <Button className="text-white" onClick={() => handleAddToCart()}>
+              <ShoppingCart className="mr-2 size-5" />
+              Thêm vào giỏ hàng
+            </Button>
           </div>
+          <Toaster />
         </div>
       )}
     </>
