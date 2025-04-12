@@ -74,14 +74,15 @@ export const updateCart = async (
     data: data,
   };
 
-  axios
-    .request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  try {
+    const response = axios.request(config);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return error;
+  }
 };
 
 export const deleteCart = async (productId, productItemId, accessToken) => {
@@ -100,12 +101,13 @@ export const deleteCart = async (productId, productItemId, accessToken) => {
     },
     data: data,
   };
-  axios
-    .request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  try {
+    const response = await axios.request(config);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return error;
+  }
 };

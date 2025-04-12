@@ -15,22 +15,22 @@ import icPlus from "@/public/ic_admin/ic_plus.svg";
 import icEditBlue from "@/public/ic_admin/ic_edit_blue.svg";
 import icBin from "@/public/ic_admin/ic_bin.svg";
 import { PaginationSelection } from "@/components/HomePage";
-import ProductRow from "@/components/custom/Admin/ProductRow";
-import CustomTable from "@/components/custom/Admin/CustomTable";
-import { CustomCreateDialog } from "@/components/custom/Admin/CustomCreateDialog";
-import { uploadFile } from "@/services/firebaseService";
+import ProductRow from "@/components/custom/Admin/Table/ProductRow";
+import CustomTable from "@/components/custom/Admin/Table/CustomTable";
+import { CustomCreateDialog } from "@/components/custom/Admin/Dialog/CustomCreateDialog";
+import { uploadProductImage } from "@/services/firebaseService";
 import { getAccessToken, getSession } from "@/services/authServices";
-import { ProductInfoForm } from "@/components/custom/Admin/ProductInfoForm";
+import { ProductInfoForm } from "@/components/custom/Admin/Form/ProductInfoForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { CustomUpdateDialog } from "@/components/custom/Admin/CustomUpdateDialog";
-import { CustomAlertDialog } from "@/components/custom/Admin/CustomAlertDialog";
+import { CustomUpdateDialog } from "@/components/custom/Admin/Dialog/CustomUpdateDialog";
+import { CustomAlertDialog } from "@/components/custom/Admin/Dialog/CustomAlertDialog";
 
 const ProductAdminPage = () => {
   const [productList, setProductList] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
-  const [totalItems, setTotalItems] = useState();
+  const [totalItems, setTotalItems] = useState(0);
   const productField = [
     { name: "Ảnh", width: "6%" },
     { name: "Tên", width: "36%" },
@@ -74,15 +74,24 @@ const ProductAdminPage = () => {
     setProductBrand("");
   };
 
-  // const getAllProductQuantity = async () => {
-  //   const data = await getListProduct();
-  //   console.log(data);
-  //   setTotalProductQuantity(data.content.length);
-  // };
+  const showError = (errorArr) => {
+    errorArr.forEach((error) => {
+      toast.error(error[1]);
+    });
+  };
 
-  // useEffect(() => {
-  //   getAllProductQuantity();
-  // }, []);
+  const checkDuplicateNameKey = (data) => {
+    let nameCounts = {};
+    for (let i = 0; i < data.length; i++) {
+      let name = data[i].name.toLowerCase();
+      if (nameCounts[name]) {
+        return true;
+      } else {
+        nameCounts[name] = 1;
+      }
+    }
+    return false;
+  };
 
   useEffect(() => {
     getProductData();
@@ -108,11 +117,12 @@ const ProductAdminPage = () => {
           <CustomAlertDialog
             itemTrigger={
               <button
-                className="border-warning border-[1px] px-[20px] py-[6px] rounded-[8px] hover:drop-shadow-xl hover:opacity-80 flex flex-row items-center justify-center bg-red-50 w-[110px]"
+                className="border-red-500 border-[1px] px-[20px] py-[6px] rounded-[8px] hover:drop-shadow-xl hover:opacity-80 flex flex-row items-center justify-center bg-red-50 w-[110px]"
                 style={{ opacity: selectedProduct != -1 ? 1 : 0 }}
+                disabled={selectedProduct == -1}
               >
                 <Image alt="Bin icon" src={icBin} width={12} height={12} />
-                <div className="text-warning text-[14px] font-bold ml-[4px]">
+                <div className="text-red-500 text-[14px] font-bold ml-[4px]">
                   Xóa
                 </div>
               </button>
@@ -142,9 +152,7 @@ const ProductAdminPage = () => {
                 setSelectedProduct(-1);
               } else {
                 const errorArray = Object.entries(res.data);
-                errorArray.forEach((error) => {
-                  toast.error(error[1]);
-                });
+                showError(errorArray);
               }
             }}
           />
@@ -156,8 +164,30 @@ const ProductAdminPage = () => {
             confirmContent={"Cập nhật"}
             onConfirm={async () => {
               console.log("Confirm update product");
+              if (
+                checkDuplicateNameKey(productOptionList) ||
+                checkDuplicateNameKey(productSpecList)
+              ) {
+                console.log(productOptionList);
+                console.log(productSpecList);
+                const errorArray = [];
+                if (checkDuplicateNameKey(productOptionList)) {
+                  errorArray.push([
+                    "Option List",
+                    "Phân loại hàng trùng nhau!",
+                  ]);
+                }
+                if (checkDuplicateNameKey(productSpecList)) {
+                  errorArray.push([
+                    "Specification List",
+                    "Thông tin chi tiết trùng nhau!",
+                  ]);
+                }
+                showError(errorArray);
+                return;
+              }
               const imgURL = selectedFiles[0]
-                ? await uploadFile(selectedFiles[0])
+                ? await uploadProductImage(selectedFiles[0])
                 : productList[selectedProduct].thumbnailUrl;
               let token = "";
               try {
@@ -188,9 +218,7 @@ const ProductAdminPage = () => {
                 resetState();
               } else {
                 const errorArray = Object.entries(res.data);
-                errorArray.forEach((error) => {
-                  toast.error(error[1]);
-                });
+                showError(errorArray);
               }
             }}
             onCancel={() => {
@@ -201,6 +229,7 @@ const ProductAdminPage = () => {
               <button
                 className="border-blue-600 border-[1px] px-[20px] py-[6px] rounded-[8px] hover:drop-shadow-xl hover:opacity-80 flex flex-row items-center justify-center bg-blue-50 w-[110px]"
                 style={{ opacity: selectedProduct != -1 ? 1 : 0 }}
+                disabled={selectedProduct == -1}
                 onClick={() => {
                   resetState();
                   setProductName(productList[selectedProduct].name);
@@ -326,8 +355,30 @@ const ProductAdminPage = () => {
             confirmContent={"Thêm"}
             onConfirm={async () => {
               console.log("Confirm create product");
+              if (
+                checkDuplicateNameKey(productOptionList) ||
+                checkDuplicateNameKey(productSpecList)
+              ) {
+                console.log(productOptionList);
+                console.log(productSpecList);
+                const errorArray = [];
+                if (checkDuplicateNameKey(productOptionList)) {
+                  errorArray.push([
+                    "Option List",
+                    "Phân loại hàng trùng nhau!",
+                  ]);
+                }
+                if (checkDuplicateNameKey(productSpecList)) {
+                  errorArray.push([
+                    "Specification List",
+                    "Thông tin chi tiết trùng nhau!",
+                  ]);
+                }
+                showError(errorArray);
+                return;
+              }
               const imgURL = selectedFiles[0]
-                ? await uploadFile(selectedFiles[0])
+                ? await uploadProductImage(selectedFiles[0])
                 : "";
               let token = "";
               try {
@@ -358,9 +409,7 @@ const ProductAdminPage = () => {
                 resetState();
               } else {
                 const errorArray = Object.entries(res.data);
-                errorArray.forEach((error) => {
-                  toast.error(error[1]);
-                });
+                showError(errorArray);
               }
             }}
             onCancel={() => {

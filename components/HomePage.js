@@ -11,7 +11,6 @@ import CategoryCard from "@/components/custom/CategoryCard";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -40,7 +39,7 @@ const HomePage = () => {
   const getCategoryData = async () => {
     const data = await getCategories();
     console.log(">>> check cate:", data);
-    setCategoryList(data);
+    setCategoryList(data.content);
   };
 
   useEffect(() => {
@@ -206,11 +205,12 @@ const HomePage = () => {
       {/* Category */}
       <div className="flex items-center justify-center pt-4 mx-32">
         <div className="flex-grow grid grid-cols-6 gap-2 bg-white p-4 rounded-md">
-          {categoryList.map((item, index) => (
-            <Link href={`/category/${item.urlKey}/${item.id}`} key={index}>
-              <CategoryCard categoryItem={item} />
-            </Link>
-          ))}
+          {categoryList.length > 0 &&
+            categoryList.map((item, index) => (
+              <Link href={`/category/${item.urlKey}/${item.id}`} key={index}>
+                <CategoryCard categoryItem={item} />
+              </Link>
+            ))}
         </div>
       </div>
 

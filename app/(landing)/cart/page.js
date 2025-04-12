@@ -10,30 +10,43 @@ export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
 
   const fetchCartItems = async () => {
-    if (accessToken) {
-      setCartItems(await getCart(accessToken));
-    }
+    setCartItems(await getCart(accessToken));
   };
 
   const updateCartItem = async (productId, productItemId, delta) => {
     if (productItemId === null) {
-      await updateCart(productId, null, delta, accessToken);
+      const response = await updateCart(productId, null, delta, accessToken);
+
+      fetchCartItems();
     } else {
       for (let i = 0; i < productItemId.length; i++) {
         productItemId[i] = productItemId[i].id;
       }
-      await updateCart(null, productItemId, delta, accessToken);
+      const response = await updateCart(
+        null,
+        productItemId,
+        delta,
+        accessToken
+      );
+
+      fetchCartItems();
     }
   };
 
   const deleteCartItem = async (productId, productItemId) => {
     if (productItemId === null) {
-      await deleteCart(productId, null, accessToken);
+      const response = await deleteCart(productId, null, accessToken);
+      // console.log(">>> response: ", response.data);
+
+      fetchCartItems();
     } else {
       for (let i = 0; i < productItemId.length; i++) {
         productItemId[i] = productItemId[i].id;
       }
-      await deleteCart(null, productItemId, accessToken);
+      const response = await deleteCart(null, productItemId, accessToken);
+      // console.log(">>> response: ", response.data);
+
+      fetchCartItems();
     }
   };
 
@@ -52,20 +65,17 @@ export default function CartPage() {
 
     if (itemQuantity > 1) {
       updateCartItem(itemId, itemOption, -1);
-      fetchCartItems(accessToken);
     } else {
       if (
         window.confirm("Bạn có chắc muốn xóa sản phẩm này ra khỏi giỏ hàng?")
       ) {
         deleteCartItem(itemId, itemOption);
-        fetchCartItems(accessToken);
       }
     }
   };
 
   const moreOfThisProduct = (itemId, itemOption) => {
     updateCartItem(itemId, itemOption, 1);
-    fetchCartItems(accessToken);
   };
 
   const calculateTotalPrice = () => {
@@ -82,8 +92,9 @@ export default function CartPage() {
   console.log(cartItems);
 
   return (
-    <div className="bg-gray-100 w-full px-32 py-10 h-full ">
+    <div className="bg-gray-100 w-full px-32 py-10 h-full min-h-[calc(100vh-76px-360.8px)]">
       <div className="text-lg font-medium pb-8">GIỎ HÀNG</div>
+      {/* Giỏ hàng trống */}
       {cartItems && cartItems.length == 0 && (
         <div className="flex flex-col bg-white p-6 gap-2 items-center rounded-md">
           <img
@@ -97,6 +108,8 @@ export default function CartPage() {
           </div>
         </div>
       )}
+
+      {/* Có sản phẩm trong giỏ hàng */}
       {cartItems && cartItems.length > 0 && (
         <table className="table-auto w-full mb-4">
           <thead className="bg-white mb-4">
@@ -212,7 +225,6 @@ export default function CartPage() {
                           )
                         ) {
                           deleteCartItem(item.id, item.option);
-                          fetchCartItems(accessToken);
                         }
                       }}
                     >

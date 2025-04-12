@@ -74,7 +74,7 @@ export const login = async (username, password) => {
   }
   if (role) {
     if (role == "ADMIN") {
-      redirect("/admin");
+      redirect("/admin/product");
     } else {
       redirect("/");
     }

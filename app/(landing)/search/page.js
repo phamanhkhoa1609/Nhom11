@@ -1,27 +1,35 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getCategoryById } from "@/services/categoryServices";
-import { useParams } from "next/navigation";
+import { searchProductByName } from "@/services/productServices";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/custom/ProductCard";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export default function CategoryDetail() {
-  const [category, setCategory] = useState({});
+export default function SearchDetail() {
+  const [searchValue, setSearchValue] = useState("");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [activeToggle, setActiveToggle] = useState(null); // State để lưu trạng thái của các toggle
-  const params = useParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const getCategoryData = async () => {
-    const data = await getCategoryById(params.id);
-    setCategory(data);
-    setSortedProducts(data.products); // Khởi tạo sortedProducts với products ban đầu
+  useEffect(() => {
+    setSearchValue(searchParams.get("name"));
+  }, [searchParams]);
+
+  const getSearchData = async () => {
+    const data = await searchProductByName(searchValue);
+    console.log("Search..." + searchValue);
+    setSortedProducts(data);
+    console.log(data);
   };
 
   useEffect(() => {
-    getCategoryData();
-  }, []);
+    if (searchValue !== "") {
+      getSearchData();
+    }
+  }, [searchValue]);
 
   // Hàm xử lý khi một toggle được nhấn
   const handleToggle = (toggleName) => () => {
@@ -30,9 +38,13 @@ export default function CategoryDetail() {
     );
   };
 
+  const handleBackHome = async () => {
+    router.push("/");
+  };
+
   useEffect(() => {
-    if (category && category.products) {
-      let sorted = [...category.products];
+    if (sortedProducts) {
+      let sorted = [...sortedProducts];
       if (activeToggle === "toggle1") {
         sorted.sort((a, b) => b.price - a.price);
       } else if (activeToggle === "toggle2") {
@@ -40,11 +52,13 @@ export default function CategoryDetail() {
       } else if (activeToggle === "toggle3") {
         sorted.sort((a, b) => b.discountRate - a.discountRate);
       }
-      setSortedProducts(sorted);
+      // Sử dụng một biến tạm thời để lưu kết quả sắp xếp
+      const newSortedProducts = [...sorted];
+      setSortedProducts(newSortedProducts);
     }
-  }, [activeToggle, category]);
+  }, [activeToggle]);
 
-  if (!category) {
+  if (!sortedProducts) {
     return <div>Loading...</div>;
   }
 
@@ -184,6 +198,20 @@ export default function CategoryDetail() {
                   //parentWidth={viewportWidth}
                 />
               </Link>
+            ))}
+          {!sortedProducts ||
+            (sortedProducts.length === 0 && (
+              <div className="flex justify-center items-center gap-4 flex-col w-full my-8">
+                <div className="font-bold text-xl text-center ">
+                  Không tìm thấy sản phẩm nào !
+                </div>
+                <button
+                  className="bg-primary w-fit text-white p-2 rounded-md shadow-sm font-semibold"
+                  onClick={handleBackHome}
+                >
+                  Quay về trang chủ
+                </button>
+              </div>
             ))}
         </div>
       </div>

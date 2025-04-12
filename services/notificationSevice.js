@@ -1,13 +1,11 @@
 import axios from "axios";
 
-const getCategories = async (pageNo, pageSize, sortBy, sortDir) => {
+const getAllNotifications = async (pageNo, pageSize) => {
   try {
-    const res = await axios.get("http://localhost:8080/api/v1/categories", {
+    const res = await axios.get("http://localhost:8080/api/v1/notifications", {
       params: {
         pageNo,
         pageSize,
-        sortBy,
-        sortDir,
       },
     });
     if (res && res.data) {
@@ -18,21 +16,8 @@ const getCategories = async (pageNo, pageSize, sortBy, sortDir) => {
   }
 };
 
-const getCategoryById = async (id) => {
-  try {
-    const res = await axios.get(
-      `http://localhost:8080/api/v1/categories/${id}`
-    );
-    if (res && res.data) {
-      return res.data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const createCategory = async (category, token) => {
-  let data = category;
+const createNotification = async (notifications, token) => {
+  let data = notifications;
 
   let config = {
     maxBodyLength: Infinity,
@@ -43,7 +28,7 @@ const createCategory = async (category, token) => {
 
   try {
     const res = await axios.post(
-      "http://localhost:8080/api/v1/categories",
+      "http://localhost:8080/api/v1/notifications",
       data,
       config
     );
@@ -55,8 +40,8 @@ const createCategory = async (category, token) => {
   }
 };
 
-const updateCategoryById = async (category, token, id) => {
-  let data = category;
+const updateNotificationById = async (notifications, token, id) => {
+  let data = notifications;
 
   let config = {
     maxBodyLength: Infinity,
@@ -67,7 +52,7 @@ const updateCategoryById = async (category, token, id) => {
 
   try {
     const res = await axios.put(
-      `http://localhost:8080/api/v1/categories/${id}`,
+      `http://localhost:8080/api/v1/notifications/${id}`,
       data,
       config
     );
@@ -79,7 +64,7 @@ const updateCategoryById = async (category, token, id) => {
   }
 };
 
-const deleteCategoryById = async (token, id) => {
+const deleteNotificationById = async (token, id) => {
   let config = {
     maxBodyLength: Infinity,
     headers: {
@@ -89,7 +74,7 @@ const deleteCategoryById = async (token, id) => {
 
   try {
     const res = await axios.delete(
-      `http://localhost:8080/api/v1/categories/${id}`,
+      `http://localhost:8080/api/v1/notifications/${id}`,
       config
     );
     if (res && res.data) {
@@ -99,11 +84,9 @@ const deleteCategoryById = async (token, id) => {
     return error.response;
   }
 };
-
 export {
-  getCategories,
-  getCategoryById,
-  createCategory,
-  updateCategoryById,
-  deleteCategoryById,
+  getAllNotifications,
+  createNotification,
+  updateNotificationById,
+  deleteNotificationById,
 };

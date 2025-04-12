@@ -39,6 +39,8 @@ module.exports = {
         // },
         warning: "#EE4D2D",
         primary: "#0A68FF",
+        warning: "#ffb100",
+        phuoc: "#fef6ec",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

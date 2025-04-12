@@ -100,10 +100,24 @@ const deleteProductById = async (token, id) => {
   }
 };
 
+const searchProductByName = async (name) => {
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/v1/products/search?name=${name}`
+    );
+    if (res && res.data) {
+      return res.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getListProduct,
   getProductById,
   createProduct,
   updateProductById,
   deleteProductById,
+  searchProductByName,
 };

@@ -1,8 +1,8 @@
 import trimText from "@/utils/trimText";
 import Image from "next/image";
 import iconEye from "@/public/ic_eye.svg";
-import { CustomCheckbox } from "./CustomCheckbox";
-import { CustomDialog, CustomViewDialog } from "./CustomViewDialog";
+import { CustomCheckbox } from "../CustomCheckbox";
+import { CustomDialog, CustomViewDialog } from "../Dialog/CustomViewDialog";
 import iconStar from "@/public/ic_star.svg";
 
 const ProductRow = ({ product, className, onSelected, onClickViewDetail }) => {
