@@ -119,7 +119,6 @@ export const ProductInformation = ({ product }) => {
 
   // console.log(productItemId.toString());
   // console.log(accessToken);
-  console.log(product);
 
   const starsCount = Math.round(product.ratingAverage);
 

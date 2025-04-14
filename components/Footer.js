@@ -11,68 +11,23 @@ const Footer = () => {
           <div className="space-y-2">
             <div className="grid grid-cols-2">
               <span className="text-gray-500 text-xs">Backend Developer: </span>
-              <Link
-                className="flex"
-                href="https://www.facebook.com/hoangducmanh254"
-              >
-                <span className="text-primary text-xs hover:underline hover:cursor-pointer">
-                  Đức Mạnh
-                </span>
-              </Link>
+              <span className="text-primary text-xs">Phan Anh Tuấn</span>
             </div>
             <div className="grid grid-cols-2">
-              <span className="text-gray-500 text-xs">
-                Fullstack Developer:{" "}
-              </span>
-              <Link
-                className="flex"
-                href="https://www.facebook.com/andrew.nguyen0505"
-              >
-                <span className="text-primary text-xs hover:underline hover:cursor-pointer">
-                  Hoàng Anh
-                </span>
-              </Link>
+              <span className="text-gray-500 text-xs">Backend Developer: </span>
+              <span className="text-primary text-xs">Trần Lê Thiên Trí</span>
             </div>
             <div className="grid grid-cols-2">
               <span className="text-gray-500 text-xs">Frontend Developer:</span>
-              <Link
-                className="flex"
-                href="https://www.facebook.com/baoduy.truonghoang.581/"
-              >
-                <span className="text-primary text-xs hover:underline hover:cursor-pointer">
-                  Bảo Duy
-                </span>
-              </Link>
-            </div>
-            <div className="grid grid-cols-2">
-              <span className="text-gray-500 text-xs">Frontend Developer:</span>
-              <Link
-                className="flex"
-                href="https://www.facebook.com/phuocphan162"
-              >
-                <span className="text-primary text-xs hover:underline hover:cursor-pointer">
-                  Ngọc Phước
-                </span>
-              </Link>
-            </div>
-            <div className="grid grid-cols-2">
-              <span className="text-gray-500 text-xs">Frontend Developer:</span>
-              <Link
-                className="flex"
-                href="https://www.facebook.com/profile.php?id=100036010281125"
-              >
-                <span className="text-primary text-xs hover:underline hover:cursor-pointer">
-                  Đình Tâm
-                </span>
-              </Link>
+              <span className="text-primary text-xs">Phạm Anh Khoa</span>
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-4 w-1/5">
-          <span>Về Harbe</span>
+          <span>Về eMartix</span>
           <div className="flex flex-col gap-2">
-            <div className="text-xs text-gray-500">Giới thiệu Harbe</div>
-            <div className="text-xs text-gray-500">Harbe Blog</div>
+            <div className="text-xs text-gray-500">Giới thiệu eMartix</div>
+            <div className="text-xs text-gray-500">eMartix Blog</div>
             <div className="text-xs text-gray-500">Tuyển dụng</div>
             <div className="text-xs text-gray-500">
               Chính sách bảo mật thanh toán
@@ -84,7 +39,7 @@ const Footer = () => {
               Chính sách giải quyết khiếu nại
             </div>
             <div className="text-xs text-gray-500">Điều khoản sử dụng</div>
-            <div className="text-xs text-gray-500">Giới thiệu Harbe Xu</div>
+            <div className="text-xs text-gray-500">Giới thiệu eMartix Xu</div>
           </div>
         </div>
         <div className="flex flex-col gap-4 w-1/5">
@@ -100,13 +55,10 @@ const Footer = () => {
         <div className="flex flex-col gap-4 w-1/5">
           <div>Kết nối với chúng tôi</div>
           <div className="flex gap-4">
-            <Link href="https://www.facebook.com/andrew.nguyen0505">
-              <Avatar>
-                <AvatarImage src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" />
-                <AvatarFallback>Facebook</AvatarFallback>
-              </Avatar>
-            </Link>
-
+            <Avatar>
+              <AvatarImage src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" />
+              <AvatarFallback>Facebook</AvatarFallback>
+            </Avatar>
             <Avatar>
               <AvatarImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/2048px-Icon_of_Zalo.svg.png" />
               <AvatarFallback>Zalo</AvatarFallback>
@@ -119,11 +71,10 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex flex-col w-full mx-32 p-4 bg-white gap-4">
-        <div>Công ty TNHH Harbe</div>
+        <div>Công ty TNHH eMartix</div>
         <div className="space-y-2">
           <div className="text-xs text-gray-500">
-            Trường Đại học Công nghệ Thông tin - Đường Hàn Thuyên, khu phố 6 P,
-            Thủ Đức, Thành phố Hồ Chí Minh
+            Trường Đại học Công nghiệp TP.HCM
           </div>
         </div>
       </div>

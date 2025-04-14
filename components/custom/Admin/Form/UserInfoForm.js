@@ -2,6 +2,7 @@ import ImagePicker from "@/components/custom/Admin/ImagePicker";
 import iconPlusBlue from "@/public/ic_admin/ic_plus_blue.svg";
 import { NameValueForm } from "./NameValueForm";
 import Image from "next/image";
+import { DatePicker } from "../../DatePicker";
 
 export const UserInfoForm = ({
   userEmail,
@@ -12,6 +13,13 @@ export const UserInfoForm = ({
   onUserUsernameChange,
   userPassword,
   onUserPasswordChange,
+  userBirthDate,
+  onUserBirthDateSelected,
+  gender,
+  onMaleSelected,
+  onFemaleSelected,
+  userPhone,
+  onUserPhoneChange,
 }) => {
   return (
     <>
@@ -53,6 +61,20 @@ export const UserInfoForm = ({
 
               <div className="w-full mt-[12px]">
                 <div className="text-sm font-semibold text-black flex flex-col justify-start items-start">
+                  Số điện thoại
+                </div>
+                <div className="w-full relative flex items-center justify-center flex-row">
+                  <input
+                    value={userPhone || ""}
+                    onChange={onUserPhoneChange}
+                    type="text"
+                    className="border-[1.5px] border-gray-300 bg-gray-50 focus:outline-none focus:border-blue-600 focus:border-[1.5px] text-black text-sm py-[8px] px-[16px] rounded-[6px] w-full mt-[4px] pr-[32px]"
+                  />
+                </div>
+              </div>
+
+              <div className="w-full mt-[12px]">
+                <div className="text-sm font-semibold text-black flex flex-col justify-start items-start">
                   Tên đăng nhập
                 </div>
                 <div className="w-full relative flex items-center justify-center flex-row">
@@ -76,6 +98,48 @@ export const UserInfoForm = ({
                     type="text"
                     className="border-[1.5px] border-gray-300 bg-gray-50 focus:outline-none focus:border-blue-600 focus:border-[1.5px] text-black text-sm py-[8px] px-[16px] rounded-[6px] w-full mt-[4px] pr-[32px]"
                   />
+                </div>
+              </div>
+
+              <div className="flex flex-row items-center w-full gap-[64px]">
+                <div className="w-full mt-[12px]">
+                  <div className="text-sm font-semibold text-black flex flex-col justify-start items-start">
+                    Ngày sinh
+                  </div>
+                  <div className="w-full relative flex items-center justify-start flex-row">
+                    <DatePicker
+                      date={userBirthDate}
+                      setDate={onUserBirthDateSelected}
+                    />
+                  </div>
+                </div>
+
+                <div className="w-full mt-[12px]">
+                  <div className="text-sm font-semibold text-black flex flex-col justify-start items-start">
+                    Giới tính
+                  </div>
+                  <div className="w-full relative flex items-center justify-start flex-row gap-[4px]">
+                    <button
+                      className={`px-[24px] py-[8px] rounded-[8px] border-[1.5px] border-blue-600 ${
+                        gender == "male"
+                          ? "bg-blue-600 text-white"
+                          : "bg-blue-50 text-black"
+                      }`}
+                      onClick={onMaleSelected}
+                    >
+                      Nam
+                    </button>
+                    <button
+                      className={`px-[24px] py-[8px] rounded-[8px] border-[1.5px] border-blue-600 ${
+                        gender == "female"
+                          ? "bg-blue-600 text-white"
+                          : "bg-blue-50 text-black"
+                      }`}
+                      onClick={onFemaleSelected}
+                    >
+                      Nữ
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

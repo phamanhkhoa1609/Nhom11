@@ -41,6 +41,13 @@ const Header = () => {
     setCartItems(await getCart(accessToken));
   };
 
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchProduct = async (event) => {
+    event.preventDefault();
+    router.push("/search?name=" + searchValue);
+  };
+
   useEffect(() => {
     (async () => {
       setAccessToken(await getAccessToken());
@@ -52,7 +59,9 @@ const Header = () => {
     fetchCartItems(accessToken);
   }, [accessToken]);
 
-  console.log("cartItems from header", cartItems);
+  useEffect(() => {
+    fetchCartItems(accessToken);
+  }, [cartItems]);
 
   return (
     <div className="sticky top-0 z-50 flex flex-row justify-between items-center px-32 py-2 bg-white w-full">
@@ -61,8 +70,8 @@ const Header = () => {
       <Link href="/" className={`${nunito.className} w-fit`}>
         <div className="flex-col items-center text-primary justify-center">
           <div className="flex">
-            <div className="text-4xl font-extrabold">Har</div>
-            <div className="text-4xl font-bold text-yellow-500">be</div>
+            <div className="text-4xl font-extrabold">eM</div>
+            <div className="text-4xl font-bold text-yellow-500">artix</div>
           </div>
           <div className="font-bold text-center text-sm">Tốt & Nhanh</div>
         </div>
@@ -70,7 +79,12 @@ const Header = () => {
 
       {/* Search */}
       <div className="flex-grow pr-10 ml-10">
-        <SearchInput placeholder={"Bạn tìm gì hôm nay"} />
+        <SearchInput
+          placeholder={"Bạn tìm gì hôm nay"}
+          value={searchValue}
+          onValueChange={(e) => setSearchValue(e.target.value)}
+          onSubmit={handleSearchProduct}
+        />
       </div>
 
       {/* Buttons */}

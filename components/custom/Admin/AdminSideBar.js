@@ -27,7 +27,7 @@ const AdminSideBar = ({ menu, others }) => {
   return (
     <div className="bg-black px-[32px] py-[16px] flex flex-col items-center">
       <Link href="/">
-        <Image alt="Harbe Logo" priority={true} src={logo} width={160} />
+        <Image alt="eMartix Logo" priority={true} src={logo} width={160} />
       </Link>
       <div className="flex flex-col justify-center h-fit mt-[64px]">
         <div className="text-gray-400 font-semibold text-[14px]">MENU</div>
@@ -40,7 +40,7 @@ const AdminSideBar = ({ menu, others }) => {
             }}
           >
             <div
-              className={`flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px] hover:bg-[#0077B6] ${
+              className={`flex row items-center mt-[2px] py-[14px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[180px] hover:bg-[#0077B6] ${
                 selectedTab === item.name ? "bg-[#0077B6]" : "bg-transparent"
               }`}
             >
@@ -60,9 +60,9 @@ const AdminSideBar = ({ menu, others }) => {
             logout();
           }}
         >
-          <div className="flex row items-center mt-[12px] py-[8px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]">
+          <div className="flex row items-center mt-[2px] py-[14px] pl-[12px] rounded-[8px] cursor-pointer transition-all duration-300 ease-in-out w-[160px]">
             <Image alt={`Exit icon`} src={icExit} className="size-4 mr-2" />
-            <div className="text-red-500 text-[17px] mr-[40px]">Logout</div>
+            <div className="text-red-500 text-[17px] mr-[40px]">Đăng xuất</div>
           </div>
         </button>
 

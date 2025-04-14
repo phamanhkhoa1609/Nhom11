@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { searchProductByName } from "@/services/productServices";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/custom/ProductCard";
@@ -15,7 +15,16 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export default function SearchDetail() {
+
+export default function SearchPage() {
+  return <>
+  <Suspense fallback={<div>Loading...</div>}>
+    <SearchDetail />
+  </Suspense>;
+  </>
+}
+
+function SearchDetail() {
   const [searchValue, setSearchValue] = useState("");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [activeToggle, setActiveToggle] = useState(null); // State để lưu trạng thái của các toggle
@@ -23,6 +32,7 @@ export default function SearchDetail() {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const [totalItems, setTotalItems] = useState();
+  const [totalPages, setTotalPages] = useState();
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -32,18 +42,21 @@ export default function SearchDetail() {
   }, [searchParams]);
 
   const getSearchData = async () => {
-    const data = await searchProductByName(searchValue);
-    console.log("Search..." + searchValue);
+    const data = await searchProductByName(
+      searchValue,
+      currentPage,
+      itemsPerPage
+    );
     setSortedProducts(data.content);
     setTotalItems(data.totalElements);
-    console.log(data);
+    setTotalPages(data.totalPages);
   };
 
   useEffect(() => {
     if (searchValue !== "") {
       getSearchData();
     }
-  }, [searchValue]);
+  }, [searchValue, currentPage]);
 
   // Hàm xử lý khi một toggle được nhấn
   const handleToggle = (toggleName) => () => {
@@ -235,6 +248,7 @@ export default function SearchDetail() {
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
           />
         </div>
       </div>
@@ -247,9 +261,10 @@ export const PaginationSelection = ({
   itemsPerPage,
   currentPage,
   setCurrentPage,
+  totalPages,
 }) => {
   let pages = [];
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+  for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
 

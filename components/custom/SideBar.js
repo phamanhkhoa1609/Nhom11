@@ -69,7 +69,7 @@ const SideBar = ({ menu, others, user }) => {
               </Link>
             ))}
             {user && user.name === "admin" && (
-              <Link href="/admin">
+              <Link href="/admin/product">
                 <div
                   className="flex row items-center mt-[12px] py-[8px] pl-4 rounded cursor-pointer transition-all duration-300 ease-in-out w-full"
                   style={{

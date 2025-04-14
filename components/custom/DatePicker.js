@@ -13,9 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker() {
-  const [date, setDate] = useState(null);
-
+export const DatePicker = ({ date, setDate }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -40,4 +38,4 @@ export function DatePicker() {
       </PopoverContent>
     </Popover>
   );
-}
+};

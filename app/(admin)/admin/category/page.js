@@ -20,6 +20,7 @@ import {
   deleteCategoryById,
   getCategories,
   getCategoryById,
+  searchCategoryByName,
   updateCategoryById,
 } from "@/services/categoryServices";
 import CategoryAdminCard from "@/components/custom/Admin/CategoryAdminCard";
@@ -47,6 +48,17 @@ const CategoryAdminPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(-1);
   const [categoryName, setCategoryName] = useState("");
   const [categoryWithProducts, setCategoryWithProducts] = useState();
+  const [searchValue, setSearchValue] = useState("");
+
+  const getSearchCategoryData = async () => {
+    const data = await searchCategoryByName(
+      searchValue,
+      currentPage,
+      itemsPerPage
+    );
+    setCategoryList(data.content);
+    setTotalItems(data.totalElements);
+  };
 
   const getCategoryData = async () => {
     const data = await getCategories(currentPage, itemsPerPage);
@@ -68,7 +80,11 @@ const CategoryAdminPage = () => {
   };
 
   useEffect(() => {
-    getCategoryData();
+    if (searchValue && searchValue.length > 0) {
+      getSearchCategoryData();
+    } else {
+      getCategoryData();
+    }
   }, [currentPage]);
 
   console.log(categoryList);
@@ -78,14 +94,26 @@ const CategoryAdminPage = () => {
       {/* Search bar */}
       <div className="flex flex-row items-center w-full border-b-[1px] border-gray-300 px-[32px] py-[10px]">
         <div className="flex flex-row items-center mr-[64px]">
-          <div className="text-[18px] font-semibold">All categories</div>
+          <div className="text-[18px] font-semibold">Tổng phân loại</div>
           <div className="px-[8px] py-[1px] bg-blue-600 text-white text-[14px] rounded-[16px] ml-[12px] flex items-center justify-center">
             {totalItems}
           </div>
         </div>
 
         <div className="grow">
-          <SearchInput placeholder={"Nhập từ khóa..."} />
+          <SearchInput
+            placeholder={"Nhập từ khóa tên phân loại..."}
+            value={searchValue}
+            onValueChange={(e) => setSearchValue(e.target.value)}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (searchValue && searchValue.length > 0) {
+                await getSearchCategoryData();
+              } else {
+                await getCategoryData();
+              }
+            }}
+          />
         </div>
 
         <div className="flex flex-row justify-center items-center gap-[16px] ml-[24px]">
@@ -116,7 +144,7 @@ const CategoryAdminPage = () => {
                 {/* Product count */}
                 <div className="flex flex-row items-center mr-[64px] mt-[8px] mb-[16px]">
                   <div className="text-[16px] font-semibold text-black">
-                    Product
+                    Tổng sản phẩm
                   </div>
                   <div className="px-[8px] py-[1px] bg-blue-600 text-white text-[14px] rounded-[16px] ml-[12px] flex items-center justify-center">
                     {categoryWithProducts?.products?.length}

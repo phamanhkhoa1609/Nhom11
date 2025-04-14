@@ -25,7 +25,11 @@ const NotificationRow = ({ notification, className, onSelected }) => {
         <div className="">{notification.title}</div>
       </td>
       <td className={className + " rounded-r-[4px]"} onClick={onSelected}>
-        <div className="py-[12px]">{trimText(notification.message, 60)}</div>
+        <div className="py-[12px]">
+          {notification?.message?.length > 0
+            ? trimText(notification.message, 60)
+            : ""}
+        </div>
       </td>
     </>
   );

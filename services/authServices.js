@@ -5,13 +5,14 @@ import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const register = async (username, name, email, password) => {
+export const register = async (username, name, email, phone, password) => {
   try {
     const res = await axios.post("http://localhost:8080/api/v1/auth/signup", {
       username: username,
       name: name,
       email: email,
       password: password,
+      phone: phone,
     });
 
     if (res && res.data) {

@@ -39,8 +39,6 @@ export default function ProfileLayout({ children }) {
       link: "/customer/account",
     },
     { name: "Thông báo của tôi", icon: icNoti, link: "/customer/notification" },
-    { name: "Quản lý đơn hàng", icon: icOrder, link: "/customer/order" },
-    { name: "Sổ địa chỉ", icon: icAddress, link: "/customer/address" },
   ];
 
   const others = [

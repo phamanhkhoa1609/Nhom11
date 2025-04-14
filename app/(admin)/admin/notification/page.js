@@ -19,6 +19,8 @@ import {
   createNotification,
   deleteNotificationById,
   getAllNotifications,
+  getShockNotificationById,
+  searchNotificationByTitle,
   updateNotificationById,
 } from "@/services/notificationSevice";
 import { NotificationInfoForm } from "@/components/custom/Admin/Form/NotificationForm";
@@ -39,11 +41,53 @@ const NotificationAdminPage = () => {
   const [selectedNotification, setSelectedNotification] = useState(-1);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [searchKey, setSearchKey] = useState("");
+
+  const getSearchNotificationData = async () => {
+    const data = await searchNotificationByTitle(
+      searchKey,
+      currentPage,
+      itemsPerPage
+    );
+    console.log("Search:", data);
+    setNotificationList(data.content);
+    let token = "";
+    try {
+      token = await getAccessToken();
+    } catch (error) {
+      console.log(error);
+    }
+    const shockNoti = await getShockNotificationById(token, 1);
+    console.log("Shock notification: ", shockNoti);
+    setNotificationList((prevData) => {
+      const updatedData = [...prevData];
+      if (updatedData.length > totalItems - 1) updatedData.pop();
+      updatedData.push(shockNoti);
+      updatedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      return updatedData;
+    });
+    setTotalItems(data.totalElements);
+  };
 
   const getNotificationData = async () => {
     const data = await getAllNotifications(currentPage, itemsPerPage);
     console.log(data);
-    setNotificationList(data.content);
+    setNotificationList(data?.content);
+    let token = "";
+    try {
+      token = await getAccessToken();
+    } catch (error) {
+      console.log(error);
+    }
+    const shockNoti = await getShockNotificationById(token, 1);
+    console.log("Shock notification: ", shockNoti);
+    setNotificationList((prevData) => {
+      const updatedData = [...prevData];
+      updatedData.pop();
+      updatedData.push(shockNoti);
+      updatedData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      return updatedData;
+    });
     setTotalItems(data.totalElements);
   };
 
@@ -59,7 +103,11 @@ const NotificationAdminPage = () => {
   };
 
   useEffect(() => {
-    getNotificationData();
+    if (searchKey && searchKey.length > 0) {
+      getSearchNotificationData();
+    } else {
+      getNotificationData();
+    }
   }, [currentPage]);
 
   return (
@@ -67,14 +115,26 @@ const NotificationAdminPage = () => {
       {/* Search bar */}
       <div className="flex flex-row items-center w-full border-b-[1px] border-gray-300 px-[32px] py-[10px]">
         <div className="flex flex-row items-center mr-[64px]">
-          <div className="text-[18px] font-semibold">All notifications</div>
+          <div className="text-[18px] font-semibold">Tổng thông báo</div>
           <div className="px-[8px] py-[1px] bg-blue-600 text-white text-[14px] rounded-[16px] ml-[12px] flex items-center justify-center">
             {totalItems}
           </div>
         </div>
 
         <div className="grow">
-          <SearchInput placeholder={"Nhập từ khóa..."} />
+          <SearchInput
+            placeholder={"Nhập từ khóa tiêu đề..."}
+            value={searchKey}
+            onValueChange={(e) => setSearchKey(e.target.value)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchKey && searchKey.length > 0) {
+                getSearchNotificationData();
+              } else {
+                getNotificationData();
+              }
+            }}
+          />
         </div>
 
         <div className="flex flex-row justify-center items-center gap-[16px] ml-[64px]">

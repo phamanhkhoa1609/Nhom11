@@ -5,6 +5,7 @@ import { getCart, updateCart, deleteCart } from "@/services/cartServices";
 import { getAccessToken } from "@/services/authServices";
 import { convertPrice } from "@/utils/convertPrice";
 import { useRouter } from "next/navigation";
+import { CustomAlertDialog } from "@/components/custom/Admin/Dialog/CustomAlertDialog";
 
 export default function CartPage() {
   const [accessToken, setAccessToken] = useState();
@@ -107,7 +108,7 @@ export default function CartPage() {
           />
           <div className="font-medium">Giỏ hàng đang trống!</div>
           <div>
-            Bạn tham khảo thêm các sản phẩm được Harbe gợi ý bên dưới nhé!
+            Bạn tham khảo thêm các sản phẩm được eMartix gợi ý bên dưới nhé!
           </div>
         </div>
       )}
@@ -121,7 +122,6 @@ export default function CartPage() {
                 scope="col"
                 className="flex items-center gap-6 py-5 px-12 text-sm text-left font-semibold"
               >
-                <input type="checkBox" />
                 <span>Sản phẩm</span>
               </th>
               <th scope="col" className="px-2 py-4 text-sm font-semibold">
@@ -146,7 +146,6 @@ export default function CartPage() {
               cartItems.map((item, index) => (
                 <tr key={`cart-item-${index}`} className="bg-white mb-4">
                   <td className="flex items-center gap-6 px-12 py-4">
-                    <input type="checkBox" />
                     <img
                       src={item.thumbnailUrl}
                       alt="Product"
@@ -165,7 +164,7 @@ export default function CartPage() {
                         </div>
                       ))}
                   </td>
-                  <td className="px-2 py-4 text-sm whitespace-nowrap flex items-center justify-center gap-2">
+                  <td className="px-2 py-4 text-sm whitespace-nowrap items-center justify-center gap-2">
                     {item.discountRate > 0 && (
                       <div className="flex gap-3">
                         <span className="text-gray-300 line-through">
@@ -256,7 +255,7 @@ export default function CartPage() {
               <td className="px-2 py-4 text-sm whitespace-nowrap text-center"></td>
               <td className="px-2 py-4 text-sm whitespace-nowrap text-center"></td>
               <td className="px-2 py-4 text-sm whitespace-nowrap text-center flex items-center gap-1">
-                <svg
+                {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -270,13 +269,13 @@ export default function CartPage() {
                     d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"
                   />
                 </svg>
-                Mã giảm giá
+                Mã giảm giá */}
               </td>
               <td
                 className="px-2 py-4 text-sm whitespace-nowrap text-center"
                 colSpan={2}
               >
-                <p className="text-primary text-end pr-16">Chọn hoặc nhập mã</p>
+                {/* <p className="text-primary text-end pr-16">Chọn hoặc nhập mã</p> */}
               </td>
             </tr>
             <tr className="font-medium">
@@ -284,9 +283,9 @@ export default function CartPage() {
                 className="px-2 py-8 text-sm whitespace-nowrap flex items-center gap-2 pl-12"
                 colSpan={1}
               >
-                <input type="checkBox" />
+                {/* <input type="checkBox" />
                 <span>Chọn tất cả ({cartItems.length})</span>
-                <span>Xóa</span>
+                <span>Xóa</span> */}
               </td>
               <td
                 className="px-2 py-4 text-sm whitespace-nowrap text-end pr-16"

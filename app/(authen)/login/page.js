@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import logo2 from "../../../public/ic_logo_2.svg";
+
 import facebookLogo from "../../../public/ic_facebook_logo.svg";
 import googleLogo from "../../../public/ic_goole_logo.svg";
 import { useState } from "react";
@@ -33,12 +33,14 @@ export default function LoginPage() {
     <>
       <div className="bg-blue-100 flex flex-row items-center justify-evenly w-full">
         {/* Logo */}
-        <Image
-          src={logo2}
-          alt="Harbe Logo"
-          priority={true}
-          className="h-auto w-[600px]"
-        />
+        <div className="flex flex-col items-center">
+          <div className="text-[120px] font-bold mb-6 tracking-tight">
+            <span className="text-[#0A68FF]">e</span>
+            <span className="text-[#0A68FF]">M</span>
+            <span className="text-[#EAB308]">artix</span>
+          </div>
+          <div className="text-4xl text-[#0A68FF] tracking-wide font-bold">Tốt & Nhanh</div>
+        </div>
 
         {/* Form */}
         <div className="bg-white p-[32px] rounded-lg w-[480px]">
@@ -83,13 +85,13 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <Link href={"/"} className="hover:text-gray-600">
+          {/* <Link href={"/"} className="hover:text-gray-600">
             <div className="text-[14px] text-primary mt-[8px] hover:decoration-solid hover:underline">
               Quên mật khẩu
             </div>
-          </Link>
+          </Link> */}
 
-          <div className="mt-[32px] flex flex-row justify-center items-center">
+          {/* <div className="mt-[32px] flex flex-row justify-center items-center">
             <div className="w-[64px] border-[1px] h-[0px] border-gray-300"></div>
             <div className="text-[14px] text-gray-500 mx-[32px]">HOẶC</div>
             <div className="w-[64px] border-[1px] h-[0px] border-gray-300"></div>
@@ -115,10 +117,10 @@ export default function LoginPage() {
               ></Image>
               <div className="text-[14px] ml-[8px]">Google</div>
             </button>
-          </div>
+          </div> */}
 
           <div className="flex flex-row justify-center items-center mt-[32px] text-[14px] text-gray-500">
-            <div>Bạn mới biết đến Harbe?</div>
+            <div>Bạn mới biết đến eMartix?</div>
             <Link href={"/register"}>
               <div className="ml-[6px] text-primary hover:decoration-solid hover:underline">
                 Đăng ký

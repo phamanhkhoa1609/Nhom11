@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import { Avatar } from "@/components/ui/avatar";
 import BorderSide from "@/components/custom/BorderSide";
@@ -21,6 +22,25 @@ import { Button } from "@/components/ui/button";
 import { getListProduct } from "@/services/productServices";
 import { getCategories } from "@/services/categoryServices";
 import { ArrowUp } from "@/components/icons/arrow-up";
+import { useRouter } from "next/router";
+
+import Iphone16 from '../assets/Iphone16.png';
+import Iphone15 from '../assets/iphone15.png';
+import Samsung from '../assets/samsung.png';
+import MacbookPro from '../assets/macbookpro.png';
+import MsiLaptop from '../assets/msilaptop.png';
+import AsusLaptop from '../assets/asuslaptop.png';
+import IpadPro from '../assets/ipadpro.png';
+import IpadPro11 from '../assets/ipadpro11.png';
+import SurfacePro from '../assets/Surfacepro.png';
+import Accessories1 from '../assets/acesories1.png';
+import Accessories2 from '../assets/acesories2.png';
+import Accessories3 from '../assets/acesories3.png';
+import Iphone12 from '../assets/iphone12.png';
+import DellLaptop from '../assets/delllaptop.png';
+import IpadPro2020 from '../assets/ipadpro2020.png';
+import HeadphoneBluetooth from '../assets/headphonebluetooth.png';
+import { products } from "@/data/products";
 
 const HomePage = () => {
   const [productList, setProductList] = useState([]);
@@ -29,6 +49,7 @@ const HomePage = () => {
   const [itemsPerPage, setItemsPerPage] = useState(30);
   const [totalItems, setTotalItems] = useState();
   const [viewportWidth, setViewportWidth] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const getProductData = async () => {
     const data = await getListProduct(currentPage, itemsPerPage);
@@ -64,6 +85,26 @@ const HomePage = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const category = [
+    { name: 'SmartPhone' },
+    { name: 'Tablet' },
+    { name: 'Laptop' },
+    { name: 'Accessories'},
+    { name: 'Máy lạnh điều hòa'},
+    { name: 'Tivi tủ lạnh'},
+  ];
+
+  const handleCategoryClick = (categoryName) => {
+    if (selectedCategory === categoryName) {
+      setSelectedCategory(null);
+    } else {
+      setSelectedCategory(categoryName);
+    }
+  };
+
+  const filteredProducts = selectedCategory
+    ? products.filter(item => item.category === selectedCategory)
+    : products;
 
   return (
     <div className="bg-gray-100">
@@ -204,27 +245,138 @@ const HomePage = () => {
 
       {/* Category */}
       <div className="flex items-center justify-center pt-4 mx-32">
-        <div className="flex-grow grid grid-cols-6 gap-2 bg-white p-4 rounded-md">
-          {categoryList.length > 0 &&
-            categoryList.map((item, index) => (
-              <Link href={`/category/${item.urlKey}/${item.id}`} key={index}>
-                <CategoryCard categoryItem={item} />
-              </Link>
-            ))}
+        <div className="flex-grow grid grid-cols-6 gap-4 bg-white p-4 rounded-md">
+          {category.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => handleCategoryClick(item.name)}
+              className={`group cursor-pointer ${
+                selectedCategory === item.name ? 'bg-blue-50' : ''
+              }`}
+            >
+              <div className="flex flex-col items-center justify-center p-2 hover:text-primary transition-colors">
+                <div className={`w-16 h-16 mb-2 rounded-full flex items-center justify-center ${
+                  selectedCategory === item.name 
+                  ? 'bg-blue-100' 
+                  : 'bg-gray-100 group-hover:bg-blue-50'
+                }`}>
+                  {index === 0 && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                    </svg>
+                  )}
+                  {index === 1 && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+                    </svg>
+                  )}
+                  {index === 2 && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5h3m-6.75 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-15a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 4.5v15a2.25 2.25 0 0 0 2.25 2.25Z" />
+                    </svg>
+                  )}
+                  
+                  {index === 3 && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+                    </svg>
+                  )}
+                  {index === 4 && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5ZM3.75 18h15A2.25 2.25 0 0 0 21 15.75v-6a2.25 2.25 0 0 0-2.25-2.25h-15A2.25 2.25 0 0 0 1.5 9.75v6A2.25 2.25 0 0 0 3.75 18Z" />
+                    </svg>
+                  )}
+                  {index === 5 && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3" />
+                    </svg>
+                  )}
+                </div>
+                <span className={`text-sm text-center ${
+                  selectedCategory === item.name 
+                  ? 'text-primary' 
+                  : 'text-gray-600 group-hover:text-primary'
+                }`}>{item.name}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+      
 
       {/* Products */}
-      <div className="flex flex-wrap mx-32 justify-start mt-5 items-center gap-[14px]">
-        {productList.map((item, index) => (
-          <Link href={`/product/${item.productSlug}/${item.id}`} key={index}>
-            <ProductCard
-              id={item.id}
-              product={item}
-              parentWidth={viewportWidth}
-            />
-          </Link>
-        ))}
+      <div className="mx-32 pt-4">
+        <div className="flex-grow grid grid-cols-5 gap-4 auto-rows-fr">
+          {filteredProducts.map((item) => (
+            <Link 
+              href={`/product/${item.name.toLowerCase().replace(/ /g, '-')}/${item.id}`} 
+              key={item.id} 
+              className="bg-white p-4 rounded-lg hover:shadow-lg transition-shadow"
+            >
+              <div className="flex flex-col h-full">
+                {/* Image */}
+                <div className="relative h-[200px] mb-3">
+                  <Image 
+                    src={item.image}
+                    alt={item.name}
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-contain"
+                  />
+                  {item.discountPrice && (
+                    <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+                      -{Math.round(((item.price - item.discountPrice) / item.price) * 100)}%
+                    </div>
+                  )}
+                </div>
+
+                {/* Product Info */}
+                <div className="flex flex-col flex-grow">
+                  {/* Name */}
+                  <h3 className="text-sm font-medium text-gray-800 mb-1 line-clamp-2">
+                    {item.name}
+                  </h3>
+
+                  {/* Price */}
+                  <div className="mt-auto">
+                    {item.discountPrice ? (
+                      <div className="flex flex-col">
+                        <span className="text-red-500 font-medium">
+                          {item.discountPrice.toLocaleString()}$
+                        </span>
+                        <span className="text-gray-400 text-sm line-through">
+                          {item.price.toLocaleString()}$
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-red-500 font-medium">
+                        {item.price.toLocaleString()}$
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Rating & Sold */}
+                  <div className="flex items-center mt-2 text-xs text-gray-500">
+                    <div className="flex items-center">
+                      <svg className="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <span>4.5</span>
+                    </div>
+                    <span className="mx-1">|</span>
+                    <span>Đã bán 100+</span>
+                  </div>
+
+                  {/* Brand & Warranty */}
+                  <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+                    <span>{item.brand}</span>
+                    {item.warranty && <span>{item.warranty}</span>}
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Pagination */}

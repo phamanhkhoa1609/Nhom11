@@ -100,10 +100,18 @@ const deleteProductById = async (token, id) => {
   }
 };
 
-const searchProductByName = async (name) => {
+const searchProductByName = async (name, pageNo, pageSize, sortBy, sortDir) => {
   try {
     const res = await axios.get(
-      `http://localhost:8080/api/v1/products/search?name=${name}`
+      `http://localhost:8080/api/v1/products/search?name=${name}`,
+      {
+        params: {
+          pageNo,
+          pageSize,
+          sortBy,
+          sortDir,
+        },
+      }
     );
     if (res && res.data) {
       return res.data;

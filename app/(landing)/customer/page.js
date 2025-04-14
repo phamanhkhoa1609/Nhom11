@@ -1,7 +1,8 @@
+import { redirect } from 'next/navigation'
+
 const HomeProfile = () => {
-  return {
-    path: "/customer/profile",
-    component: HomeProfile,
-    exact: true,
-  };
+  redirect('/customer/account');
+  return <></>
 };
+
+export default HomeProfile;

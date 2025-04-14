@@ -17,11 +17,11 @@ import { usePathname } from "next/navigation";
 export default function AdminLayout({ children }) {
   const menu = [
     // { name: "Dashboard", icon: icDashboards, link: "/admin" },
-    { name: "Product", icon: icProduct, link: "/admin/product" },
-    { name: "Category", icon: icTag, link: "/admin/category" },
-    { name: "Order", icon: icOrder, link: "/admin/order" },
-    { name: "User", icon: icUser, link: "/admin/user" },
-    { name: "Notification", icon: icNotification, link: "/admin/notification" },
+    { name: "Sản phẩm", icon: icProduct, link: "/admin/product" },
+    { name: "Phân loại", icon: icTag, link: "/admin/category" },
+    { name: "Đơn hàng", icon: icOrder, link: "/admin/order" },
+    { name: "Người dùng", icon: icUser, link: "/admin/user" },
+    { name: "Thông báo", icon: icNotification, link: "/admin/notification" },
   ];
 
   const others = [

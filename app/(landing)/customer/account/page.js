@@ -7,8 +7,9 @@ import { BreadCrumb } from "@/components/custom/BreadCrumb";
 import Image from "next/image";
 import { DatePicker } from "@/components/custom/DatePicker";
 
-const accountPage = () => {
+const AccountPage = () => {
   const [userInfo, setUserInfo] = useState();
+  const [date, setDate] = useState();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -151,7 +152,7 @@ const accountPage = () => {
                       >
                         Ngày sinh
                       </label>
-                      <DatePicker />
+                      <DatePicker date={date} setDate={setDate} />
                     </div>
 
                     <div className="w-full">
@@ -238,4 +239,4 @@ const accountPage = () => {
   );
 };
 
-export default accountPage;
+export default AccountPage;
